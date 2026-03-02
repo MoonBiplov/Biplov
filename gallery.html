@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Gallery | Biplov Devkota</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap");
+
+/* ================= BASE STYLES ================= */
+body {
+    margin: 0; padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: url('bg.jpg') no-repeat center center fixed;
+    background-size: cover;
+    color: #fff;
+    overflow-x: hidden;
+}
+body::before {
+    content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.7); z-index: -1;
+}
+
+.liquid-text { font-family: "Orbitron", sans-serif; color: white; text-shadow: 0 0 8px rgba(255,255,255,0.4); }
+
+/* ================= NAVIGATION ================= */
+.header {
+    width: 90%; max-width: 1000px; margin: 20px auto;
+    display: flex; justify-content: space-between; align-items: center;
+}
+.back-home {
+    text-decoration: none; color: white; font-family: 'Orbitron';
+    font-size: 11px; letter-spacing: 1px; opacity: 0.7; transition: 0.3s;
+}
+.back-home:hover { opacity: 1; transform: translateX(-5px); }
+
+/* ================= BENTO GRID GALLERY ================= */
+.gallery-container {
+    width: 90%; max-width: 1100px; margin: 0 auto 50px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: 200px;
+    gap: 20px;
+}
+
+.gallery-item {
+    position: relative; overflow: hidden; border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.1); cursor: pointer;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Smooth Image Styling */
+.gallery-item img {
+    width: 100%; height: 100%; object-fit: cover;
+    transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.8s ease-in-out;
+    will-change: opacity, transform;
+}
+
+.gallery-item:hover img { transform: scale(1.08); }
+.gallery-item:hover { border-color: rgba(255,255,255,0.4); }
+
+/* Specific Container for the Cross-Fade Slider */
+.featured-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.featured-wrapper img {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+/* Tile Size Variations */
+.item-tall { grid-row: span 2; }
+.item-wide { grid-column: span 2; }
+.item-featured { grid-column: span 2; grid-row: span 2; }
+
+/* Overlay Label */
+.item-overlay {
+    position: absolute; bottom: 0; left: 0; width: 100%;
+    background: linear-gradient(transparent, rgba(0,0,0,0.8));
+    padding: 15px; opacity: 0; transition: 0.4s;
+    z-index: 10;
+}
+.gallery-item:hover .item-overlay { opacity: 1; }
+.item-title { font-family: 'Orbitron'; font-size: 12px; letter-spacing: 1px; }
+
+/* ================= LIGHTBOX ================= */
+#lightbox {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.95); backdrop-filter: blur(20px);
+    display: none; justify-content: center; align-items: center; z-index: 10000;
+}
+#lightbox.active { display: flex; }
+#lightbox img { max-width: 85%; max-height: 80%; border-radius: 12px; box-shadow: 0 0 50px rgba(0,0,0,0.5); }
+
+.lb-btn {
+    position: absolute; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+    color: white; border-radius: 50%; width: 50px; height: 50px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; transition: 0.3s;
+}
+.lb-btn:hover { background: rgba(255,255,255,0.2); transform: scale(1.1); }
+.lb-close { top: 25px; right: 25px; font-size: 20px; }
+.lb-download { top: 25px; left: 25px; }
+
+@media (max-width: 900px) {
+    .gallery-container { grid-template-columns: repeat(2, 1fr); }
+    .item-featured { grid-column: span 2; grid-row: span 1; }
+}
+</style>
+</head>
+<body>
+
+    <header class="header">
+        <a href="index.html" class="back-home">← BACK TO HOME</a>
+        <div class="liquid-text" style="font-size: 18px; letter-spacing: 3px;">GALLERY(SMALL-NOW)</div>
+    </header>
+
+    <div class="gallery-container">
+        <div class="gallery-item item-featured" onclick="openLightbox(0)">
+            <div class="featured-wrapper">
+                <img id="imgBack" src="img2.jpg" alt="Featured Background">
+                <img id="featuredImg" src="img1.jpg" alt="Featured Foreground">
+            </div>
+            <div class="item-overlay"><div class="item-title">MOON 01</div></div>
+        </div>
+
+        <div class="gallery-item" onclick="openLightbox(1)"><img src="img2.jpg"><div class="item-overlay"><div class="item-title">02</div></div></div>
+        <div class="gallery-item item-tall" onclick="openLightbox(2)"><img src="img3.jpg"><div class="item-overlay"><div class="item-title">03</div></div></div>
+        <div class="gallery-item item-wide" onclick="openLightbox(3)"><img src="img4.jpg"><div class="item-overlay"><div class="item-title">04</div></div></div>
+        <div class="gallery-item" onclick="openLightbox(4)"><img src="img5.jpg"><div class="item-overlay"><div class="item-title">05</div></div></div>
+        <div class="gallery-item" onclick="openLightbox(5)"><img src="img6.jpg"><div class="item-overlay"><div class="item-title">06</div></div></div>
+        <div class="gallery-item" onclick="openLightbox(6)"><img src="img7.jpg"><div class="item-overlay"><div class="item-title">07</div></div></div>
+        <div class="gallery-item item-wide" onclick="openLightbox(7)"><img src="img8.jpg"><div class="item-overlay"><div class="item-title">08</div></div></div>
+        <div class="gallery-item" onclick="openLightbox(8)"><img src="img9.jpg"><div class="item-overlay"><div class="item-title">09</div></div></div>
+        <div class="gallery-item item-tall" onclick="openLightbox(9)"><img src="img10.jpg"><div class="item-overlay"><div class="item-title">10</div></div></div>
+        <div class="gallery-item" onclick="openLightbox(10)"><img src="img11.jpg"><div class="item-overlay"><div class="item-title">11</div></div></div>
+        <div class="gallery-item" onclick="openLightbox(11)"><img src="img12.jpg"><div class="item-overlay"><div class="item-title">12</div></div></div>
+        <div class="gallery-item item-wide" onclick="openLightbox(12)"><img src="img13.jpg"><div class="item-overlay"><div class="item-title">13</div></div></div>
+        <div class="gallery-item" onclick="openLightbox(13)"><img src="img14.jpg"><div class="item-overlay"><div class="item-title">14</div></div></div>
+        <div class="gallery-item" onclick="openLightbox(14)"><img src="img15.jpg"><div class="item-overlay"><div class="item-title">15</div></div></div>
+        <div class="gallery-item" onclick="openLightbox(15)"><img src="img16.jpg"><div class="item-overlay"><div class="item-title">16</div></div></div>
+        <div class="gallery-item item-tall" onclick="openLightbox(16)"><img src="img17.jpg"><div class="item-overlay"><div class="item-title">17</div></div></div>
+        <div class="gallery-item" onclick="openLightbox(17)"><img src="img18.jpg"><div class="item-overlay"><div class="item-title">18</div></div></div>
+        <div class="gallery-item item-wide" onclick="openLightbox(18)"><img src="img19.jpg"><div class="item-overlay"><div class="item-title">19</div></div></div>
+        <div class="gallery-item" onclick="openLightbox(19)"><img src="img20.jpg"><div class="item-overlay"><div class="item-title">20</div></div></div>
+        <div class="gallery-item" onclick="openLightbox(20)"><img src="img21.jpg"><div class="item-overlay"><div class="item-title">21</div></div></div>
+        <div class="gallery-item" onclick="openLightbox(21)"><img src="img22.jpg"><div class="item-overlay"><div class="item-title">22</div></div></div>
+        <div class="gallery-item item-wide" onclick="openLightbox(22)"><img src="img23.jpg"><div class="item-overlay"><div class="item-title">23</div></div></div>
+        <div class="gallery-item" onclick="openLightbox(23)"><img src="img24.jpg"><div class="item-overlay"><div class="item-title">24</div></div></div>
+        <div class="gallery-item item-tall" onclick="openLightbox(24)"><img src="img25.jpg"><div class="item-overlay"><div class="item-title">25</div></div></div>
+        <div class="gallery-item" onclick="openLightbox(25)"><img src="img26.jpg"><div class="item-overlay"><div class="item-title">26</div></div></div>
+        <div class="gallery-item" onclick="openLightbox(26)"><img src="img27.jpg"><div class="item-overlay"><div class="item-title">27</div></div></div>
+        <div class="gallery-item item-wide" onclick="openLightbox(27)"><img src="img28.jpg"><div class="item-overlay"><div class="item-title">28</div></div></div>
+        <div class="gallery-item" onclick="openLightbox(28)"><img src="img29.jpg"><div class="item-overlay"><div class="item-title">29</div></div></div>
+        <div class="gallery-item" onclick="openLightbox(29)"><img src="img30.jpg"><div class="item-overlay"><div class="item-title">30</div></div></div>
+        <div class="gallery-item" onclick="openLightbox(30)"><img src="img31.jpg"><div class="item-overlay"><div class="item-title">31</div></div></div>
+        <div class="gallery-item item-tall" onclick="openLightbox(31)"><img src="img32.jpg"><div class="item-overlay"><div class="item-title">32</div></div></div>
+        <div class="gallery-item" onclick="openLightbox(32)"><img src="img33.jpg"><div class="item-overlay"><div class="item-title">33</div></div></div>
+        <div class="gallery-item" onclick="openLightbox(33)"><img src="img34.jpg"><div class="item-overlay"><div class="item-title">34</div></div></div>
+    </div>
+
+    <div id="lightbox">
+        <button class="lb-btn lb-close" onclick="closeLightbox()">✕</button>
+        <a id="downloadLink" href="#" download class="lb-btn lb-download">
+            <svg viewBox="0 0 24 24" width="20" fill="white"><path d="M5 20h14v-2H5v2zM19 9h-4V3H9v6H5l7 7 7-7z"/></svg>
+        </a>
+        <img id="lbImg" src="">
+    </div>
+
+    <script>
+        const images = [];
+        for(let i = 1; i <= 34; i++) {
+            images.push(`img${i}.jpg`);
+        }
+
+        let featIdx = 0;
+        const featImg = document.getElementById('featuredImg');
+        const imgBack = document.getElementById('imgBack');
+
+        // Smooth Cross-Fade Logic
+        setInterval(() => {
+            featIdx = (featIdx + 1) % images.length;
+            const nextImgSrc = images[featIdx];
+
+            // 1. Prepare the background image (the one behind the current)
+            imgBack.src = nextImgSrc;
+            
+            // 2. Fade out the foreground
+            featImg.style.opacity = 0;
+
+            // 3. After fade is done, swap foreground src and reset opacity
+            setTimeout(() => {
+                featImg.src = nextImgSrc;
+                featImg.style.opacity = 1;
+            }, 800); // Matches CSS transition duration
+        }, 4500);
+
+        function openLightbox(index) {
+            const lb = document.getElementById('lightbox');
+            const img = document.getElementById('lbImg');
+            const dl = document.getElementById('downloadLink');
+            
+            img.src = (index === 0) ? featImg.src : images[index];
+            dl.href = img.src;
+            lb.classList.add('active');
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox').classList.remove('active');
+        }
+        
+        document.addEventListener('keydown', (e) => {
+            if (e.key === "Escape") closeLightbox();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Biplov Devkota | Portfolio</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap");
+
+/* ================= PRELOADER ================= */
+#loader-wrapper {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: #0a0a0a;
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    z-index: 99999;
+    transition: opacity 0.8s ease, visibility 0.8s;
+}
+.loader-logo {
+    font-family: "Orbitron", sans-serif;
+    font-size: 2.5rem; letter-spacing: 10px; color: #fff;
+    margin-bottom: 20px; white-space: nowrap; overflow: hidden;
+    border-right: 3px solid #fff; width: 0;
+    animation: typing 1.5s steps(6, end) forwards, blink 0.75s step-end infinite;
+}
+.loader-bar { width: 250px; height: 2px; background: rgba(255, 255, 255, 0.1); position: relative; border-radius: 4px; overflow: hidden; }
+.loader-bar::after { content: ''; position: absolute; left: -100%; width: 100%; height: 100%; background: #fff; animation: fill-bar 3s linear forwards; }
+
+@keyframes typing { from { width: 0 } to { width: 220px; } }
+@keyframes blink { from, to { border-color: transparent } 50% { border-color: #fff; } }
+@keyframes fill-bar { 0% { left: -100%; } 100% { left: 0%; } }
+.loader-hidden { opacity: 0; visibility: hidden; }
+
+/* ================= BASE STYLES ================= */
+body {
+    margin: 0; padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: url('bg.jpg') no-repeat center center fixed;
+    background-size: cover;
+    color: #fff;
+    overflow-x: hidden;
+}
+body::before {
+    content: "";
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: -1;
+}
+
+.glass-panel {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(15px) saturate(160%);
+    -webkit-backdrop-filter: blur(15px) saturate(160%);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 24px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    margin-bottom: 25px;
+    width: 90%;
+    max-width: 1000px;
+}
+
+.liquid-text { font-family: "Orbitron", sans-serif; color: white; text-shadow: 0 0 8px rgba(255,255,255,0.4); }
+.fade-in-up { opacity: 0; transform: translateY(30px); transition: 1s ease-out; }
+.fade-in-up.visible { opacity: 1; transform: translateY(0); }
+
+/* ================= VERTICAL SOCIAL CAPSULE (LEFT) ================= */
+.social-capsule {
+    position: fixed;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    padding: 22px 10px;
+    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 40px;
+    z-index: 999;
+}
+.social-link {
+    width: 38px; height: 38px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 50%; transition: all 0.3s ease;
+}
+.social-link svg { width: 18px; height: 18px; fill: rgba(255,255,255,0.6); }
+.social-link:hover { background: rgba(255,255,255,0.1); transform: scale(1.1); }
+.social-link:hover svg { fill: #fff; }
+
+/* ================= GALLERY SLIDER ================= */
+.slider-container {
+    position: relative; width: 90%; max-width: 1000px;
+    aspect-ratio: 16 / 9; margin: 0 auto 25px; 
+    overflow: hidden; border-radius: 24px;
+}
+#mainSlider {
+    width: 100%; height: 100%;
+    background-size: cover; background-position: center;
+    transition: background-image 0.8s ease-in-out; cursor: zoom-in;
+}
+
+/* ================= LIGHTBOX ================= */
+#lightbox {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.95); backdrop-filter: blur(30px);
+    display: none; justify-content: center; align-items: center; z-index: 10000;
+}
+#lightbox.active { display: flex; }
+#lightbox img { max-width: 85%; max-height: 75%; border-radius: 12px; transition: opacity 0.4s; }
+
+.lb-btn {
+    position: absolute; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
+    color: white; border-radius: 50%; width: 50px; height: 50px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; z-index: 10001; transition: 0.3s;
+}
+.lb-btn:hover { background: rgba(255,255,255,0.2); }
+.lb-prev { left: 25px; top: 50%; transform: translateY(-50%); }
+.lb-next { right: 25px; top: 50%; transform: translateY(-50%); }
+.lb-close { top: 25px; right: 25px; }
+.lb-download { top: 25px; left: 25px; }
+.lb-download svg { width: 20px; height: 20px; fill: white; }
+
+/* ================= HEADER ================= */
+.header { display: flex; justify-content: space-between; align-items: center; padding: 15px 30px; margin-top: 20px; }
+.nav-links ul { list-style: none; display: flex; gap: 25px; margin: 0; padding: 0; }
+.nav-links a { text-decoration: none; font-size: 11px; letter-spacing: 2px; color: white; opacity: 0.7; transition: 0.3s; font-family: 'Orbitron'; }
+.nav-links a:hover { opacity: 1; text-shadow: 0 0 8px #fff; }
+
+.skill-tag { background: rgba(255,255,255,0.08); padding: 6px 14px; border-radius: 20px; font-size: 10px; border: 1px solid rgba(255,255,255,0.15); font-family: "Orbitron"; letter-spacing: 1px; }
+.skill-tag.clickable { cursor: pointer; transition: 0.3s; }
+.skill-tag.clickable:hover { background: rgba(255,255,255,0.2); border-color: #fff; }
+
+.angle-btn {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.2); 
+    color: white; width: 45px; height: 45px; border-radius: 50%; cursor: pointer; z-index: 10;
+    display: flex; align-items: center; justify-content: center; transition: 0.3s;
+}
+.angle-btn:hover { background: rgba(255,255,255,0.15); }
+.prev { left: 20px; } .next { right: 20px; }
+
+@media (max-width: 768px) {
+    .social-capsule { display: none; }
+    .header { padding: 15px 20px; }
+}
+</style>
+</head>
+<body>
+
+<div id="loader-wrapper">
+    <div class="loader-logo">BIPLOV</div>
+    <div class="loader-bar"></div>
+</div>
+
+<div class="social-capsule">
+    <a href="https://github.com/MoonBiplov" target="_blank" class="social-link" title="GitHub">
+        <svg viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 4.243 2.752 7.841 6.571 9.111.6.111.82-.261.82-.577 0-.285-.011-1.04-.015-2.04-2.67.58-3.233-1.287-3.233-1.287-.436-1.107-1.064-1.402-1.064-1.402-.87-.595.066-.583.066-.583.963.068 1.47 0.989 1.47 0.989.855 1.464 2.246 1.041 2.792.796.087-.62.335-1.041.61-1.281-2.131-.242-4.371-1.065-4.371-4.742 0-1.048.374-1.905 0.987-2.576-.099-.243-.427-1.218.094-2.538 0 0 .806-.258 2.64 0.984.765-.213 1.586-.319 2.401-.323.815.004 1.636.11 2.401.323 1.832-1.242 2.637-.984 2.637-.984.522 1.32.194 2.295.095 2.538.614.671.986 1.528.986 2.576 0 3.686-2.243 4.498-4.381 4.735.344.296.65.882.65 1.777 0 1.283-.012 2.318-.012 2.633 0 .319.217.693.825.576 3.817-1.272 6.565-4.87 6.565-9.109 0-6.627-5.373-12-12-12z"/></svg>
+    </a>
+    <a href="https://www.instagram.com/moonbiplov/" target="_blank" class="social-link" title="Instagram">
+        <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.266.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.848 0-3.204.012-3.584.07-4.849.149-3.225 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.791-4-4s1.791-4 4-4 4 1.791 4 4-1.791 4-4 4zm6.406-11.845c.796 0 1.441.645 1.441 1.44s-.645 1.44-1.441 1.44-1.44-.645-1.44-1.44.645-1.44 1.44-1.44z"/></svg>
+    </a>
+    <a href="https://www.youtube.com/@moonxd07" target="_blank" class="social-link" title="YouTube">
+        <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+    </a>
+    <a href="https://mail.google.com/mail/u/0/?fs=1&to=biplovmoon@gmail.com&tf=cm" target="_blank" class="social-link" title="Email">
+        <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+    </a>
+</div>
+
+<div id="lightbox">
+    <button class="lb-btn lb-close" onclick="closeLightbox()">✕</button>
+    <button class="lb-btn lb-prev" onclick="manualChange(-1)">❮</button>
+    <button class="lb-btn lb-next" onclick="manualChange(1)">❯</button>
+    <a id="lbDownloadLink" href="#" download class="lb-btn lb-download"><svg viewBox="0 0 24 24"><path d="M5 20h14v-2H5v2zM19 9h-4V3H9v6H5l7 7 7-7z"/></svg></a>
+    <img id="lightboxImg" src="" alt="View">
+</div>
+
+<div class="container fade-in-up" id="main-content" style="display:flex; flex-direction:column; align-items:center; padding-bottom: 80px;">
+    
+    <header class="header glass-panel">
+        <div class="logo liquid-text" style="font-weight: bold; letter-spacing: 2px;">MOON</div>
+        <nav class="nav-links">
+            <ul>
+                <li><a href="index.html">HOME</a></li>
+                <li><a href="gallery.html">GALLERY</a></li>
+                <li><a href="links.html">LINKS</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="glass-panel" style="padding: 25px 30px;"> 
+        <h2 class="liquid-text" style="font-size: clamp(22px, 5vw, 32px); margin:0;">ME:</h2>
+        <div style="margin-top:8px; opacity:0.8; font-size: 14px; letter-spacing: 1px;"><span id="age"></span> YEAR OLD • DEVELOPER
+        <p>NAME: Biplov Devkota</p>
+        <p>DOB: 3rd June 2009</p>
+        <p>EDUCATION: High School Student</p>
+        <p>ADDRESS: Gorkha, Nepal</p>
+    </div>
+    </div>
+
+    <div id="gallery" class="slider-container glass-panel">
+        <div class="angle-btn prev" onclick="manualChange(-1)">❮</div>
+        <div class="angle-btn next" onclick="manualChange(1)">❯</div>
+        <div id="mainSlider" onclick="openLightbox()"></div>
+        <div class="slider-overlay">
+            <div id="projectTitle" class="liquid-text" style="font-size: 20px; margin-bottom: 5px;">PROJECT TITLE</div>
+            <div id="projectDesc" style="font-size: 11px; opacity: 0.7;">Cycle: 3s • Tap to expand</div>
+        </div>
+    </div>
+
+    <div id="links" class="glass-panel" style="padding: 25px 30px;">
+        <div class="liquid-text" style="font-size: 14px; letter-spacing: 2px; margin-bottom: 12px;">TECH STACK & CODE</div>
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            <span class="skill-tag">HTML5</span><span class="skill-tag">CSS3</span><span class="skill-tag">JS</span><span class="skill-tag">PYTHON</span>
+            <span class="skill-tag clickable" onclick="window.open('https://github.com/MoonBiplov', '_blank')">GITHUB →</span>
+        </div>
+    </div>
+
+    <div class="glass-panel" style="padding: 20px 30px; display: flex; justify-content: space-between; align-items: center;">
+        <div><div style="font-size: 13px; opacity: 0.8;">biplovmoon@gmail.com</div></div>
+        <button onclick="window.open('https://mail.google.com/mail/u/0/?fs=1&to=biplovmoon@gmail.com&tf=cm', '_blank')" style="background:white; border:none; color:black; padding: 12px 24px; border-radius: 30px; font-family:'Orbitron'; font-size:10px; cursor:pointer; font-weight:bold;">HIRE ME →</button>
+    </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    setTimeout(() => {
+        document.getElementById("loader-wrapper").classList.add("loader-hidden");
+        setTimeout(() => document.getElementById("main-content").classList.add("visible"), 200);
+    }, 3000); 
+});
+
+const birthDate = new Date("2009-06-03");
+function updateAge() {
+    const today = new Date();
+    let age = today.getFullYear() - birthDate.getFullYear();
+    if (today.getMonth() < birthDate.getMonth() || (today.getMonth() === birthDate.getMonth() && today.getDate() < birthDate.getDate())) age--;
+    document.getElementById("age").innerText = age;
+}
+updateAge();
+
+const projects = [{ img: "q1.jpg", title: "PROJECT ALPHA" }, { img: "q2.jpg", title: "NEBULA UI" }, { img: "q3.jpg", title: "VOID MOBILE" }];
+let currentIndex = 0;
+const sliderEl = document.getElementById("mainSlider");
+const lbImg = document.getElementById("lightboxImg");
+const pTitle = document.getElementById("projectTitle");
+
+function updateUI() {
+    const p = projects[currentIndex];
+    sliderEl.style.backgroundImage = `url('${p.img}')`;
+    pTitle.innerText = p.title;
+    if(document.getElementById("lightbox").classList.contains("active")) {
+        lbImg.style.opacity = 0;
+        setTimeout(() => {
+            lbImg.src = p.img;
+            lbImg.style.opacity = 1;
+            document.getElementById("lbDownloadLink").href = p.img;
+        }, 200);
+    }
+}
+
+function changeSlide(dir) {
+    currentIndex = (currentIndex + dir + projects.length) % projects.length;
+    updateUI();
+}
+
+let slideTimer = setInterval(() => changeSlide(1), 3000);
+function manualChange(dir) {
+    clearInterval(slideTimer);
+    changeSlide(dir);
+    slideTimer = setInterval(() => changeSlide(1), 3000);
+}
+
+function openLightbox() { document.getElementById("lightbox").classList.add("active"); updateUI(); }
+function closeLightbox() { document.getElementById("lightbox").classList.remove("active"); }
+
+updateUI();
+</script>
+
+</body>
+</html>
