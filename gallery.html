@@ -49,7 +49,6 @@ body::before {
     transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Smooth Image Styling */
 .gallery-item img {
     width: 100%; height: 100%; object-fit: cover;
     transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.8s ease-in-out;
@@ -59,7 +58,6 @@ body::before {
 .gallery-item:hover img { transform: scale(1.08); }
 .gallery-item:hover { border-color: rgba(255,255,255,0.4); }
 
-/* Specific Container for the Cross-Fade Slider */
 .featured-wrapper {
     position: relative;
     width: 100%;
@@ -115,7 +113,7 @@ body::before {
 
     <header class="header">
         <a href="index.html" class="back-home">← BACK TO HOME</a>
-        <div class="liquid-text" style="font-size: 18px; letter-spacing: 3px;">GALLERY(SMALL-NOW)</div>
+        <div class="liquid-text" style="font-size: 18px; letter-spacing: 3px;">GALLERY(UP 2 NOW)</div>
     </header>
 
     <div class="gallery-container">
@@ -160,6 +158,14 @@ body::before {
         <div class="gallery-item item-tall" onclick="openLightbox(31)"><img src="img32.jpg"><div class="item-overlay"><div class="item-title">32</div></div></div>
         <div class="gallery-item" onclick="openLightbox(32)"><img src="img33.jpg"><div class="item-overlay"><div class="item-title">33</div></div></div>
         <div class="gallery-item" onclick="openLightbox(33)"><img src="img34.jpg"><div class="item-overlay"><div class="item-title">34</div></div></div>
+
+        <div class="gallery-item item-wide" onclick="openLightbox(34)"><img src="img35.jpg"><div class="item-overlay"><div class="item-title">35</div></div></div>
+        <div class="gallery-item" onclick="openLightbox(35)"><img src="img36.jpg"><div class="item-overlay"><div class="item-title">36</div></div></div>
+        <div class="gallery-item item-tall" onclick="openLightbox(36)"><img src="img37.jpg"><div class="item-overlay"><div class="item-title">37</div></div></div>
+        <div class="gallery-item" onclick="openLightbox(37)"><img src="img38.jpg"><div class="item-overlay"><div class="item-title">38</div></div></div>
+        <div class="gallery-item item-wide" onclick="openLightbox(38)"><img src="img39.jpg"><div class="item-overlay"><div class="item-title">39</div></div></div>
+        <div class="gallery-item" onclick="openLightbox(39)"><img src="img40.jpg"><div class="item-overlay"><div class="item-title">40</div></div></div>
+        <div class="gallery-item" onclick="openLightbox(40)"><img src="img41.jpg"><div class="item-overlay"><div class="item-title">41</div></div></div>
     </div>
 
     <div id="lightbox">
@@ -172,7 +178,8 @@ body::before {
 
     <script>
         const images = [];
-        for(let i = 1; i <= 34; i++) {
+        // Updated to 41
+        for(let i = 1; i <= 41; i++) {
             images.push(`img${i}.jpg`);
         }
 
@@ -180,22 +187,16 @@ body::before {
         const featImg = document.getElementById('featuredImg');
         const imgBack = document.getElementById('imgBack');
 
-        // Smooth Cross-Fade Logic
         setInterval(() => {
             featIdx = (featIdx + 1) % images.length;
             const nextImgSrc = images[featIdx];
-
-            // 1. Prepare the background image (the one behind the current)
             imgBack.src = nextImgSrc;
-            
-            // 2. Fade out the foreground
             featImg.style.opacity = 0;
 
-            // 3. After fade is done, swap foreground src and reset opacity
             setTimeout(() => {
                 featImg.src = nextImgSrc;
                 featImg.style.opacity = 1;
-            }, 800); // Matches CSS transition duration
+            }, 800);
         }, 4500);
 
         function openLightbox(index) {
