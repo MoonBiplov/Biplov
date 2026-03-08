@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Portfolio of Biplov Devkota" />
 
-    <!-- New Relic basic snippet (safer than inlining the whole bundle) -->
     <script>
         window.NREUM ||= {};
         window.NREUM.init = {
@@ -39,6 +38,21 @@
 
     <style>
     @import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap");
+
+    /* ================= PROTECTION STYLES ================= */
+    * {
+        /* Prevents text/image selection across the whole site */
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        -webkit-user-drag: none;
+    }
+
+    img {
+        /* Specifically stops images from being dragged to desktop */
+        pointer-events: none;
+    }
 
     /* ================= PRELOADER ================= */
     #loader-wrapper {
@@ -163,7 +177,7 @@
     .social-link:hover svg { fill: #fff; }
 
     .slider-container { position: relative; width: 90%; max-width: 1000px; aspect-ratio: 16 / 9; margin: 0 auto 25px; overflow: hidden; border-radius: 24px; }
-    #mainSlider { width: 100%; height: 100%; background-size: cover; background-position: center; transition: background-image 0.8s; cursor: zoom-in; }
+    #mainSlider { width: 100%; height: 100%; background-size: cover; background-position: center; transition: background-image 0.8s; cursor: zoom-in; pointer-events: auto !important; }
 
     .header { display: flex; justify-content: space-between; align-items: center; padding: 15px 30px; margin-top: 20px; }
     .nav-links ul { list-style: none; display: flex; gap: 25px; padding-left: 0; margin: 0; }
@@ -175,9 +189,7 @@
     }
     </style>
 </head>
-<body>
-
-<div id="loader-wrapper">
+<body oncontextmenu="return false;"> <div id="loader-wrapper">
     <div class="loader-logo">BIPLOV</div>
     <div class="loader-bar"></div>
 </div>
@@ -237,7 +249,7 @@
 
     <div id="gallery" class="slider-container glass-panel">
         <div id="mainSlider" onclick="openLightbox()"></div>
-        <div style="position:absolute; bottom:20px; left:30px;">
+        <div style="position:absolute; bottom:20px; left:30px; pointer-events: none;">
             <div id="projectTitle" class="liquid-text" style="font-size: 20px;">COLLECTION</div>
         </div>
     </div>
@@ -269,7 +281,6 @@
                 <span class="default-text">FAV.COLOUR</span>
                 <span class="hover-text">BABY BLUE</span>
             </div>
-
         </div>
     </div>
 
@@ -280,6 +291,15 @@
 </div>
 
 <script>
+// --- Protection Script ---
+document.onkeydown = function(e) {
+    if(e.keyCode == 123) return false; // F12
+    if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) return false; // Ctrl+Shift+I
+    if(e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) return false; // Ctrl+Shift+C
+    if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) return false; // Ctrl+Shift+J
+    if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false; // Ctrl+U
+};
+
 document.addEventListener("DOMContentLoaded", () => {
     setTimeout(() => {
         document.getElementById("loader-wrapper").classList.add("loader-hidden");
