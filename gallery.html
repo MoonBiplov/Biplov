@@ -21,9 +21,71 @@ body::before {
     background: rgba(0, 0, 0, 0.7); z-index: -1;
 }
 
+/* ================= PASSWORD PAGE STYLES ================= */
+#password-screen {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: #0a0a0a;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 20000;
+    transition: opacity 0.5s ease, visibility 0.5s;
+}
+
+#password-screen.hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.pw-back-btn {
+    position: absolute;
+    top: 40px;
+    left: 5%;
+    text-decoration: none;
+    color: white;
+    font-family: 'Orbitron';
+    font-size: 11px;
+    letter-spacing: 1px;
+    opacity: 0.7;
+    transition: 0.3s;
+}
+.pw-back-btn:hover { opacity: 1; transform: translateX(-5px); }
+
+.pw-box {
+    text-align: center;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 40px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+}
+
+.pw-box input {
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 12px 20px;
+    color: white;
+    font-family: 'Orbitron', sans-serif;
+    text-align: center;
+    border-radius: 8px;
+    outline: none;
+    transition: 0.3s;
+}
+.pw-box input:focus { border-color: #fff; }
+
+.error-shake { animation: shake 0.4s; }
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    75% { transform: translateX(10px); }
+}
+
+/* ================= GALLERY STYLES ================= */
 .liquid-text { font-family: "Orbitron", sans-serif; color: white; text-shadow: 0 0 8px rgba(255,255,255,0.4); }
 
-/* ================= NAVIGATION ================= */
 .header {
     width: 90%; max-width: 1000px; margin: 20px auto;
     display: flex; justify-content: space-between; align-items: center;
@@ -34,7 +96,6 @@ body::before {
 }
 .back-home:hover { opacity: 1; transform: translateX(-5px); }
 
-/* ================= BENTO GRID GALLERY ================= */
 .gallery-container {
     width: 90%; max-width: 1100px; margin: 0 auto 50px;
     display: grid;
@@ -52,30 +113,16 @@ body::before {
 .gallery-item img {
     width: 100%; height: 100%; object-fit: cover;
     transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.8s ease-in-out;
-    will-change: opacity, transform;
 }
 
 .gallery-item:hover img { transform: scale(1.08); }
-.gallery-item:hover { border-color: rgba(255,255,255,0.4); }
+.featured-wrapper { position: relative; width: 100%; height: 100%; }
+.featured-wrapper img { position: absolute; top: 0; left: 0; }
 
-.featured-wrapper {
-    position: relative;
-    width: 100%;
-    height: 100%;
-}
-
-.featured-wrapper img {
-    position: absolute;
-    top: 0;
-    left: 0;
-}
-
-/* Tile Size Variations */
 .item-tall { grid-row: span 2; }
 .item-wide { grid-column: span 2; }
 .item-featured { grid-column: span 2; grid-row: span 2; }
 
-/* Overlay Label */
 .item-overlay {
     position: absolute; bottom: 0; left: 0; width: 100%;
     background: linear-gradient(transparent, rgba(0,0,0,0.8));
@@ -85,14 +132,13 @@ body::before {
 .gallery-item:hover .item-overlay { opacity: 1; }
 .item-title { font-family: 'Orbitron'; font-size: 12px; letter-spacing: 1px; }
 
-/* ================= LIGHTBOX ================= */
 #lightbox {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
     background: rgba(0,0,0,0.95); backdrop-filter: blur(20px);
     display: none; justify-content: center; align-items: center; z-index: 10000;
 }
 #lightbox.active { display: flex; }
-#lightbox img { max-width: 85%; max-height: 80%; border-radius: 12px; box-shadow: 0 0 50px rgba(0,0,0,0.5); }
+#lightbox img { max-width: 85%; max-height: 80%; border-radius: 12px; }
 
 .lb-btn {
     position: absolute; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
@@ -111,6 +157,15 @@ body::before {
 </head>
 <body>
 
+    <div id="password-screen">
+        <a href="index.html" class="pw-back-btn">← BACK TO HOME</a>
+        
+        <div class="pw-box" id="pw-container">
+            <div class="liquid-text" style="font-size: 14px; margin-bottom: 20px;">ACCESS RESTRICTED</div>
+            <input type="password" id="pw-input" placeholder="ENTER PASSCODE" autofocus>
+        </div>
+    </div>
+
     <header class="header">
         <a href="index.html" class="back-home">← BACK TO HOME</a>
         <div class="liquid-text" style="font-size: 18px; letter-spacing: 3px;">GALLERY(UP 2 NOW)</div>
@@ -124,7 +179,6 @@ body::before {
             </div>
             <div class="item-overlay"><div class="item-title">MOON 01</div></div>
         </div>
-
         <div class="gallery-item" onclick="openLightbox(1)"><img src="img2.jpg"><div class="item-overlay"><div class="item-title">02</div></div></div>
         <div class="gallery-item item-tall" onclick="openLightbox(2)"><img src="img3.jpg"><div class="item-overlay"><div class="item-title">03</div></div></div>
         <div class="gallery-item item-wide" onclick="openLightbox(3)"><img src="img4.jpg"><div class="item-overlay"><div class="item-title">04</div></div></div>
@@ -158,7 +212,6 @@ body::before {
         <div class="gallery-item item-tall" onclick="openLightbox(31)"><img src="img32.jpg"><div class="item-overlay"><div class="item-title">32</div></div></div>
         <div class="gallery-item" onclick="openLightbox(32)"><img src="img33.jpg"><div class="item-overlay"><div class="item-title">33</div></div></div>
         <div class="gallery-item" onclick="openLightbox(33)"><img src="img34.jpg"><div class="item-overlay"><div class="item-title">34</div></div></div>
-
         <div class="gallery-item item-wide" onclick="openLightbox(34)"><img src="img35.jpg"><div class="item-overlay"><div class="item-title">35</div></div></div>
         <div class="gallery-item" onclick="openLightbox(35)"><img src="img36.jpg"><div class="item-overlay"><div class="item-title">36</div></div></div>
         <div class="gallery-item item-tall" onclick="openLightbox(36)"><img src="img37.jpg"><div class="item-overlay"><div class="item-title">37</div></div></div>
@@ -177,8 +230,31 @@ body::before {
     </div>
 
     <script>
+        // --- Password Logic ---
+        const passwordInput = document.getElementById('pw-input');
+        const passwordScreen = document.getElementById('password-screen');
+        const pwContainer = document.getElementById('pw-container');
+        const correctPassword = "20090603";
+
+        passwordInput.addEventListener('input', (e) => {
+            if (e.target.value === correctPassword) {
+                passwordScreen.classList.add('hidden');
+                sessionStorage.setItem('gallery_access', 'true');
+            } else if (e.target.value.length >= correctPassword.length) {
+                pwContainer.classList.add('error-shake');
+                setTimeout(() => {
+                    pwContainer.classList.remove('error-shake');
+                    e.target.value = "";
+                }, 500);
+            }
+        });
+
+        if(sessionStorage.getItem('gallery_access') === 'true') {
+            passwordScreen.style.display = 'none';
+        }
+
+        // --- Original Gallery Logic ---
         const images = [];
-        // Updated to 41
         for(let i = 1; i <= 41; i++) {
             images.push(`img${i}.jpg`);
         }
@@ -190,20 +266,20 @@ body::before {
         setInterval(() => {
             featIdx = (featIdx + 1) % images.length;
             const nextImgSrc = images[featIdx];
-            imgBack.src = nextImgSrc;
-            featImg.style.opacity = 0;
-
-            setTimeout(() => {
-                featImg.src = nextImgSrc;
-                featImg.style.opacity = 1;
-            }, 800);
+            if(imgBack) imgBack.src = nextImgSrc;
+            if(featImg) {
+                featImg.style.opacity = 0;
+                setTimeout(() => {
+                    featImg.src = nextImgSrc;
+                    featImg.style.opacity = 1;
+                }, 800);
+            }
         }, 4500);
 
         function openLightbox(index) {
             const lb = document.getElementById('lightbox');
             const img = document.getElementById('lbImg');
             const dl = document.getElementById('downloadLink');
-            
             img.src = (index === 0) ? featImg.src : images[index];
             dl.href = img.src;
             lb.classList.add('active');
