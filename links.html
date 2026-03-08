@@ -7,6 +7,21 @@
 <style>
 @import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap");
 
+/* ================= PROTECTION STYLES ================= */
+* {
+    /* Prevents text/image selection and dragging */
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+/* Allow interaction with buttons but keep text unselectable */
+.link-btn, .back-btn {
+    pointer-events: auto;
+}
+
 /* ================= BASE STYLES ================= */
 body {
     margin: 0; padding: 0;
@@ -50,6 +65,7 @@ body::before {
     margin-bottom: 15px;
     object-fit: cover;
     transition: transform 0.3s ease;
+    pointer-events: none; /* Specifically stop image dragging */
 }
 .profile-img:hover { transform: scale(1.05); }
 
@@ -76,7 +92,6 @@ body::before {
     cursor: pointer;
 }
 
-/* Specific styling for the AI button to make it pop slightly */
 .ai-btn {
     background: rgba(100, 150, 255, 0.15);
     border-color: rgba(100, 150, 255, 0.3);
@@ -88,8 +103,6 @@ body::before {
     box-shadow: 0 10px 20px rgba(0,0,0,0.2);
     border-color: rgba(255,255,255,0.4);
 }
-
-.link-btn:active { transform: translateY(0); }
 
 .link-btn svg { width: 18px; height: 18px; fill: white; flex-shrink: 0; }
 
@@ -118,9 +131,7 @@ body::before {
 .copy-toast.show { opacity: 1; visibility: visible; bottom: 40px; }
 </style>
 </head>
-<body>
-
-    <div class="links-card">
+<body oncontextmenu="return false;"> <div class="links-card">
         <img src="pfp.jpg" alt="Biplov" class="profile-img" onerror="this.src='https://via.placeholder.com/100'">
         
         <div class="username liquid-text">BIPLOV DEVKOTA</div>
@@ -157,6 +168,15 @@ body::before {
     <div id="toast" class="copy-toast">Email copied to clipboard!</div>
 
     <script>
+        // --- Protection Script ---
+        document.onkeydown = function(e) {
+            if(e.keyCode == 123) return false; // F12
+            if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) return false; // Ctrl+Shift+I
+            if(e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) return false; // Ctrl+Shift+C
+            if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) return false; // Ctrl+Shift+J
+            if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false; // Ctrl+U
+        };
+
         function copyEmail() {
             const email = "biplovmoon@gmail.com";
             if (navigator.clipboard && window.isSecureContext) {
