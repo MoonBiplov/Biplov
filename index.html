@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Biplov Devkota | Portfolio</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Portfolio of Biplov Devkota" />
+
+    <script>
+        window.NREUM ||= {};
+        window.NREUM.init = {
+            privacy: { cookies_enabled: true },
+            ajax: { deny_list: [] },
+            feature_flags: ["soft_nav"],
+            distributed_tracing: { enabled: true }
+        };
+        window.NREUM.info = {
+            beacon: "bam.nr-data.net",
+            errorBeacon: "bam.nr-data.net",
+            licenseKey: "3f776c1fa0",
+            applicationID: "691068959",
+            transactionName: "elhfQRdXWQkHFBgOUVpaQhoXXUYKFxRUBkAWUF1BA2dQCAADUw==",
+            queueTime: 0,
+            applicationTime: 45,
+            agent: ""
+        };
+        window.NREUM.loader_config = {
+            agentID: "691069996",
+            accountID: "404656",
+            trustKey: "404656",
+            xpid: "UAYDV1NVGwUJVVFUDwgCXw==",
+            licenseKey: "3f776c1fa0",
+            applicationID: "691068959",
+            browserID: "691069996"
+        };
+    </script>
+    <script src="https://js-agent.newrelic.com/nr-spa-1.310.1.min.js"></script>
+
+    <style>
+    @import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap");
+
+    /* ================= PROTECTION STYLES ================= */
+    * {
+        /* Prevents text/image selection across the whole site */
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        -webkit-user-drag: none;
+    }
+
+    img {
+        /* Specifically stops images from being dragged to desktop */
+        pointer-events: none;
+    }
+
+    /* ================= PRELOADER ================= */
+    #loader-wrapper {
+        position: fixed;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background: #0a0a0a;
+        display: flex; flex-direction: column; justify-content: center; align-items: center;
+        z-index: 99999;
+        transition: opacity 0.8s ease, visibility 0.8s;
+    }
+    .loader-logo {
+        font-family: "Orbitron", sans-serif;
+        font-size: 2.5rem; letter-spacing: 10px; color: #fff;
+        margin-bottom: 20px; white-space: nowrap; overflow: hidden;
+        border-right: 3px solid #fff; width: 0;
+        animation: typing 1.5s steps(6, end) forwards, blink 0.75s step-end infinite;
+    }
+    .loader-bar { width: 250px; height: 2px; background: rgba(255, 255, 255, 0.1); position: relative; border-radius: 4px; overflow: hidden; }
+    .loader-bar::after { content: ''; position: absolute; left: -100%; width: 100%; height: 100%; background: #fff; animation: fill-bar 3s linear forwards; }
+
+    @keyframes typing { from { width: 0 } to { width: 220px; } }
+    @keyframes blink { from, to { border-color: transparent } 50% { border-color: #fff; } }
+    @keyframes fill-bar { 0% { left: -100%; } 100% { left: 0%; } }
+    .loader-hidden { opacity: 0; visibility: hidden; }
+
+    /* ================= BASE STYLES ================= */
+    body {
+        margin: 0; padding: 0;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        background: url('bg.jpg') no-repeat center center fixed;
+        background-size: cover;
+        color: #fff;
+        overflow-x: hidden;
+    }
+    body::before {
+        content: "";
+        position: fixed;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(0, 0, 0, 0.6);
+        z-index: -1;
+    }
+
+    .glass-panel {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(15px) saturate(160%);
+        -webkit-backdrop-filter: blur(15px) saturate(160%);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: 24px;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+        margin-bottom: 25px;
+        width: 90%;
+        max-width: 1000px;
+    }
+
+    .liquid-text { font-family: "Orbitron", sans-serif; color: white; text-shadow: 0 0 8px rgba(255,255,255,0.4); }
+    .fade-in-up { opacity: 0; transform: translateY(30px); transition: 1s ease-out; }
+    .fade-in-up.visible { opacity: 1; transform: translateY(0); }
+
+    /* ================= INTEREST TAGS ================= */
+    .interest-tag { 
+        background: rgba(255,255,255,0.08); 
+        padding: 12px 20px; 
+        border-radius: 15px; 
+        font-size: 11px; 
+        border: 1px solid rgba(255,255,255,0.1); 
+        font-family: "Orbitron"; 
+        letter-spacing: 1.5px;
+        cursor: pointer;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        position: relative;
+        overflow: hidden;
+        min-width: 80px;
+        text-align: center;
+    }
+
+    .interest-tag .hover-text {
+        position: absolute;
+        top: 100%; left: 0; width: 100%; height: 100%;
+        background: #fff; color: #000;
+        display: flex; align-items: center; justify-content: center;
+        transition: 0.3s ease;
+        font-weight: bold;
+        font-size: 9px;
+        padding: 0 5px;
+    }
+
+    .interest-tag:hover { transform: translateY(-5px); border-color: #fff; }
+    .interest-tag:hover .default-text { opacity: 0; transform: translateY(-20px); }
+    .interest-tag:hover .hover-text { top: 0; }
+
+    .baby-blue-tag {
+        background: rgba(137, 207, 240, 0.2) !important;
+        border-color: rgba(137, 207, 240, 0.4) !important;
+        color: #89CFF0 !important;
+    }
+    .baby-blue-tag .hover-text { background: #89CFF0 !important; color: #000 !important; }
+
+    /* ================= MODALS & LIGHTBOX ================= */
+    #lightbox, #model-modal { 
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+        background: rgba(0,0,0,0.95); backdrop-filter: blur(30px); 
+        display: none; justify-content: center; align-items: center; z-index: 10000; 
+    }
+    #lightbox.active, #model-modal.active { display: flex; }
+    #lightbox img { max-width: 85%; max-height: 75%; border-radius: 12px; }
+
+    .sketchfab-embed-wrapper { width: 90%; max-width: 800px; height: 500px; border-radius: 20px; overflow: hidden; background: #000; }
+    .sketchfab-embed-wrapper iframe { width: 100%; height: 100%; }
+
+    .close-btn { position:absolute; top:20px; right:20px; background:none; border:none; color:#fff; font-size:30px; cursor:pointer; z-index: 10001; }
+
+    /* ================= SOCIALS & HEADER ================= */
+    .social-capsule {
+        position: fixed; left: 20px; top: 50%; transform: translateY(-50%);
+        display: flex; flex-direction: column; gap: 18px; padding: 22px 10px;
+        background: rgba(255, 255, 255, 0.04); backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 40px; z-index: 999;
+    }
+    .social-link { width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; border-radius: 50%; transition: 0.3s; }
+    .social-link svg { width: 18px; height: 18px; fill: rgba(255,255,255,0.6); }
+    .social-link:hover { background: rgba(255,255,255,0.1); transform: scale(1.1); }
+    .social-link:hover svg { fill: #fff; }
+
+    .slider-container { position: relative; width: 90%; max-width: 1000px; aspect-ratio: 16 / 9; margin: 0 auto 25px; overflow: hidden; border-radius: 24px; }
+    #mainSlider { width: 100%; height: 100%; background-size: cover; background-position: center; transition: background-image 0.8s; cursor: zoom-in; pointer-events: auto !important; }
+
+    .header { display: flex; justify-content: space-between; align-items: center; padding: 15px 30px; margin-top: 20px; }
+    .nav-links ul { list-style: none; display: flex; gap: 25px; padding-left: 0; margin: 0; }
+    .nav-links a { text-decoration: none; font-size: 11px; letter-spacing: 2px; color: white; opacity: 0.7; font-family: 'Orbitron'; }
+
+    @media (max-width: 768px) { 
+        .social-capsule { display: none; }
+        .sketchfab-embed-wrapper { height: 350px; }
+    }
+    </style>
+</head>
+<body oncontextmenu="return false;"> <div id="loader-wrapper">
+    <div class="loader-logo">BIPLOV</div>
+    <div class="loader-bar"></div>
+</div>
+
+<div class="social-capsule">
+    <a href="https://github.com/MoonBiplov" target="_blank" class="social-link" title="GitHub">
+        <svg viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 4.243 2.752 7.841 6.571 9.111.6.111.82-.261.82-.577 0-.285-.011-1.04-.015-2.04-2.67.58-3.233-1.287-3.233-1.287-.436-1.107-1.064-1.402-1.064-1.402-.87-.595.066-.583.066-.583.963.068 1.47 0.989 1.47 0.989.855 1.464 2.246 1.041 2.792.796.087-.62.335-1.041.61-1.281-2.131-.242-4.371-1.065-4.371-4.742 0-1.048.374-1.905.987-2.576-.099-.243-.427-1.218.094-2.538 0 0 .806-.258 2.64 0.984.765-.213 1.586-.319 2.401-.323.815.004 1.636.11 2.401.323 1.832-1.242 2.637-.984 2.637-.984.522 1.32.194 2.295.095 2.538.614.671.986 1.528.986 2.576 0 3.686-2.243 4.498-4.381 4.735.344.296.65.882.65 1.777 0 1.283-.012 2.318-.012 2.633 0 .319.217.693.825.576 3.817-1.272 6.565-4.87 6.565-9.109 0-6.627-5.373-12-12-12z"/></svg>
+    </a>
+    <a href="https://www.instagram.com/moonbiplov/" target="_blank" class="social-link" title="Instagram">
+        <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.266.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.848 0-3.204.012-3.584.07-4.849.149-3.225 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.791-4-4s1.791-4 4-4 4 1.791 4 4-1.791 4-4 4zm6.406-11.845c.796 0 1.441.645 1.441 1.44s-.645 1.44-1.441 1.44-1.44-.645-1.44-1.44.645-1.44 1.44-1.44z"/></svg>
+    </a>
+</div>
+
+<div id="lightbox">
+    <button class="close-btn" onclick="closeLightbox()">✕</button>
+    <img id="lightboxImg" src="" alt="Lightbox image" />
+</div>
+
+
+</div>
+
+<div class="container fade-in-up" id="main-content"
+     style="display:flex; flex-direction:column; align-items:center; padding-bottom: 80px;">
+    
+    <header class="header glass-panel">
+        <div class="logo liquid-text" style="font-weight: bold; letter-spacing: 2px;">X</div>
+        <nav class="nav-links">
+            <ul>
+                <li><a href="index.html">HOME</a></li>
+                <li><a href="gallery.html">GALLERY</a></li>
+                <li><a href="links.html">LINKS</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="glass-panel" style="padding: 25px 30px;"> 
+        <h2 class="liquid-text" style="font-size: 28px; margin:0;">ME:</h2>
+        <div style="margin-top:8px; opacity:0.8; font-size: 14px; letter-spacing: 1px;">
+            <span id="age"></span> YEAR OLD • CREATOR
+            <p>NAME: Biplov Devkota</p>
+            <p>DOB: 3rd June 2009</p>
+            <p>ADDRESS: Gorkha, Nepal</p>
+        </div>
+    </div>
+
+    <div id="gallery" class="slider-container glass-panel">
+        <div id="mainSlider" onclick="openLightbox()"></div>
+        <div style="position:absolute; bottom:20px; left:30px; pointer-events: none;">
+            <div id="projectTitle" class="liquid-text" style="font-size: 20px;">COLLECTION</div>
+        </div>
+    </div>
+
+    <div class="glass-panel" style="padding: 25px 30px;">
+        <div class="liquid-text" style="font-size: 14px; letter-spacing: 3px; margin-bottom: 25px;">// THINGS I LIKE</div>
+        <div style="display:flex; gap:15px; flex-wrap:wrap;">
+            <div class="interest-tag">
+                <span class="default-text">MUSIC</span>
+                <span class="hover-text">DRAKE 🦉</span>
+            </div>
+
+            <div class="interest-tag">
+                <span class="default-text">GAMING</span>
+                <span class="hover-text" style="font-size: 7px;">MC, GTA V, PUBGM</span>
+            </div>
+
+            <div class="interest-tag" onclick="openModel()">
+                <span class="default-text">CARS</span>
+                <span class="hover-text">BMW M4 & Porsche 911 GT3RS</span>
+            </div>
+
+            <div class="interest-tag">
+                <span class="default-text">ASTRO 🌌</span>
+                <span class="hover-text">MOON</span>
+            </div>
+
+            <div class="interest-tag baby-blue-tag">
+                <span class="default-text">FAV.COLOUR</span>
+                <span class="hover-text">BABY BLUE</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="glass-panel" style="padding: 20px 30px; display: flex; justify-content: space-between; align-items: center; background: linear-gradient(90deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01));">
+        <div style="font-family: 'Orbitron'; font-size: 14px; color: #fff;">Chasing the Moon 🌙</div>
+        <a href="mailto:biplovmoon@gmail.com" style="color: #fff; text-decoration: none; font-size: 12px; opacity: 0.6;">biplovmoon@gmail.com</a>
+    </div>
+</div>
+
+<script>
+// --- Protection Script ---
+document.onkeydown = function(e) {
+    if(e.keyCode == 123) return false; // F12
+    if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) return false; // Ctrl+Shift+I
+    if(e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) return false; // Ctrl+Shift+C
+    if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) return false; // Ctrl+Shift+J
+    if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false; // Ctrl+U
+};
+
+document.addEventListener("DOMContentLoaded", () => {
+    setTimeout(() => {
+        document.getElementById("loader-wrapper").classList.add("loader-hidden");
+        setTimeout(() => document.getElementById("main-content").classList.add("visible"), 200);
+    }, 2500); 
+});
+
+// Age Calculator
+const birthDate = new Date("2009-06-03");
+function updateAge() {
+    const today = new Date();
+    let age = today.getFullYear() - birthDate.getFullYear();
+    if (
+        today.getMonth() < birthDate.getMonth() ||
+        (today.getMonth() === birthDate.getMonth() && today.getDate() < birthDate.getDate())
+    ) {
+        age--;
+    }
+    document.getElementById("age").innerText = age;
+}
+updateAge();
+
+// Slider Gallery Logic
+const projects = [
+    { img: "q1.jpg", title: "" },
+    { img: "q2.jpg", title: "" },
+    { img: "q3.jpg", title: "" }
+];
+let currentIndex = 0;
+const sliderEl = document.getElementById("mainSlider");
+
+function updateUI() {
+    sliderEl.style.backgroundImage = `url('${projects[currentIndex].img}')`;
+    document.getElementById("projectTitle").innerText = projects[currentIndex].title;
+}
+
+setInterval(() => {
+    currentIndex = (currentIndex + 1) % projects.length;
+    updateUI();
+}, 3000);
+
+// Modal Controls
+function openLightbox() {
+    document.getElementById("lightbox").classList.add("active");
+    document.getElementById("lightboxImg").src = projects[currentIndex].img;
+}
+function closeLightbox() {
+    document.getElementById("lightbox").classList.remove("active");
+}
+
+function openModel() {
+    document.getElementById("model-modal").classList.add("active");
+}
+function closeModel() {
+    document.getElementById("model-modal").classList.remove("active");
+}
+
+updateUI();
+</script>
+
+</body>
+</html>
