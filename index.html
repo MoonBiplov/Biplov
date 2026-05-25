@@ -37,11 +37,10 @@
     <script src="https://js-agent.newrelic.com/nr-spa-1.310.1.min.js"></script>
 
     <style>
-    @import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap");
+    @import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&display=swap");
 
     /* ================= PROTECTION STYLES ================= */
     * {
-        /* Prevents text/image selection across the whole site */
         -webkit-user-select: none;
         -moz-user-select: none;
         -ms-user-select: none;
@@ -50,33 +49,103 @@
     }
 
     img {
-        /* Specifically stops images from being dragged to desktop */
         pointer-events: none;
     }
 
-    /* ================= PRELOADER ================= */
+    /* ================= ULTRA-CLEAN KINETIC PRELOADER ================= */
     #loader-wrapper {
         position: fixed;
         top: 0; left: 0; width: 100%; height: 100%;
-        background: #0a0a0a;
-        display: flex; flex-direction: column; justify-content: center; align-items: center;
+        background: #030305;
+        display: flex; justify-content: center; align-items: center;
         z-index: 99999;
-        transition: opacity 0.8s ease, visibility 0.8s;
+        transition: transform 1.2s cubic-bezier(0.85, 0, 0.15, 1), opacity 1s ease, visibility 1.2s;
+        overflow: hidden;
     }
-    .loader-logo {
-        font-family: "Orbitron", sans-serif;
-        font-size: 2.5rem; letter-spacing: 10px; color: #fff;
-        margin-bottom: 20px; white-space: nowrap; overflow: hidden;
-        border-right: 3px solid #fff; width: 0;
-        animation: typing 1.5s steps(6, end) forwards, blink 0.75s step-end infinite;
-    }
-    .loader-bar { width: 250px; height: 2px; background: rgba(255, 255, 255, 0.1); position: relative; border-radius: 4px; overflow: hidden; }
-    .loader-bar::after { content: ''; position: absolute; left: -100%; width: 100%; height: 100%; background: #fff; animation: fill-bar 3s linear forwards; }
 
-    @keyframes typing { from { width: 0 } to { width: 220px; } }
-    @keyframes blink { from, to { border-color: transparent } 50% { border-color: #fff; } }
-    @keyframes fill-bar { 0% { left: -100%; } 100% { left: 0%; } }
-    .loader-hidden { opacity: 0; visibility: hidden; }
+    /* SVG Filter Box Trick for Organic Fluid Merging */
+    .liquid-portal {
+        position: absolute;
+        width: 450px;
+        height: 450px;
+        filter: url('#organic-goo');
+        opacity: 0.35;
+        pointer-events: none;
+    }
+
+    .liquid-drop {
+        position: absolute;
+        top: 50%; left: 50%;
+        transform: translate(-50%, -50%);
+        background: linear-gradient(135deg, #00ffff, #ff0055);
+        border-radius: 50%;
+        filter: blur(4px);
+    }
+
+    .drop-core { width: 140px; height: 140px; animation: morphBlob 8s ease-in-out infinite alternate; }
+    .drop-satellite-1 { width: 60px; height: 60px; animation: orbitBlob1 6s infinite linear; }
+    .drop-satellite-2 { width: 45px; height: 45px; animation: orbitBlob2 4s infinite linear; }
+
+    /* Elegant Kinetic Text Component */
+    .kinetic-container {
+        position: relative;
+        z-index: 5;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .clean-name-loader {
+        font-family: "Orbitron", sans-serif;
+        font-size: 3.2rem;
+        font-weight: 900;
+        color: #ffffff;
+        text-transform: uppercase;
+        letter-spacing: 35px;
+        margin-left: 35px; /* Centers text offsets caused by tracking */
+        position: relative;
+        animation: premiumStretch 4.5s cubic-bezier(0.25, 1, 0.5, 1) infinite alternate;
+        text-shadow: 0 0 40px rgba(255, 255, 255, 0.1);
+    }
+
+    .clean-line-pulse {
+        width: 40px;
+        height: 1px;
+        background: rgba(255, 255, 255, 0.25);
+        margin-top: 10px;
+        position: relative;
+        animation: expandLine 2.2s cubic-bezier(0.76, 0, 0.24, 1) infinite alternate;
+    }
+
+    /* PRELOADER KEYFRAMES */
+    @keyframes premiumStretch {
+        0% { letter-spacing: 12px; margin-left: 12px; opacity: 0.4; filter: blur(3px); }
+        35% { opacity: 1; filter: blur(0px); }
+        100% { letter-spacing: 38px; margin-left: 38px; }
+    }
+
+    @keyframes expandLine {
+        0% { width: 0px; background: rgba(0, 255, 255, 0.2); }
+        100% { width: 180px; background: rgba(255, 255, 255, 0.7); box-shadow: 0 0 10px rgba(0,255,255,0.3); }
+    }
+
+    @keyframes morphBlob {
+        0% { border-radius: 42% 58% 70% 30% / 45% 45% 55% 55%; transform: translate(-50%, -50%) rotate(0deg) scale(1); }
+        50% { border-radius: 70% 30% 52% 48% / 60% 40% 60% 40%; transform: translate(-50%, -50%) rotate(180deg) scale(1.2); }
+        100% { border-radius: 30% 70% 40% 60% / 50% 60% 40% 50%; transform: translate(-50%, -50%) rotate(360deg) scale(0.95); }
+    }
+
+    @keyframes orbitBlob1 {
+        0% { transform: translate(-50%, -50%) rotate(0deg) translateX(110px) rotate(0deg); }
+        100% { transform: translate(-50%, -50%) rotate(360deg) translateX(110px) rotate(-360deg); }
+    }
+
+    @keyframes orbitBlob2 {
+        0% { transform: translate(-50%, -50%) rotate(360deg) translateX(80px) rotate(-360deg); }
+        100% { transform: translate(-50%, -50%) rotate(0deg) translateX(80px) rotate(0deg); }
+    }
+
+    .loader-hidden { transform: translateY(-100%); opacity: 0; visibility: hidden; }
 
     /* ================= BASE STYLES ================= */
     body {
@@ -91,37 +160,37 @@
         content: "";
         position: fixed;
         top: 0; left: 0; width: 100%; height: 100%;
-        background: rgba(0, 0, 0, 0.6);
+        background: rgba(2, 2, 4, 0.75);
         z-index: -1;
     }
 
     .glass-panel {
-        background: rgba(255, 255, 255, 0.05);
-        backdrop-filter: blur(15px) saturate(160%);
-        -webkit-backdrop-filter: blur(15px) saturate(160%);
-        border: 1px solid rgba(255, 255, 255, 0.15);
+        background: rgba(255, 255, 255, 0.03);
+        backdrop-filter: blur(20px) saturate(180%);
+        -webkit-backdrop-filter: blur(20px) saturate(180%);
+        border: 1px solid rgba(255, 255, 255, 0.08);
         border-radius: 24px;
-        box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+        box-shadow: 0 15px 35px rgba(0,0,0,0.6);
         margin-bottom: 25px;
         width: 90%;
         max-width: 1000px;
     }
 
-    .liquid-text { font-family: "Orbitron", sans-serif; color: white; text-shadow: 0 0 8px rgba(255,255,255,0.4); }
-    .fade-in-up { opacity: 0; transform: translateY(30px); transition: 1s ease-out; }
+    .liquid-text { font-family: "Orbitron", sans-serif; color: white; text-shadow: 0 0 8px rgba(255,255,255,0.3); }
+    .fade-in-up { opacity: 0; transform: translateY(40px); transition: 1.2s cubic-bezier(0.215, 0.610, 0.355, 1); }
     .fade-in-up.visible { opacity: 1; transform: translateY(0); }
 
     /* ================= INTEREST TAGS ================= */
     .interest-tag { 
-        background: rgba(255,255,255,0.08); 
+        background: rgba(255,255,255,0.04); 
         padding: 12px 20px; 
         border-radius: 15px; 
         font-size: 11px; 
-        border: 1px solid rgba(255,255,255,0.1); 
+        border: 1px solid rgba(255,255,255,0.06); 
         font-family: "Orbitron"; 
         letter-spacing: 1.5px;
         cursor: pointer;
-        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
         position: relative;
         overflow: hidden;
         min-width: 80px;
@@ -133,27 +202,27 @@
         top: 100%; left: 0; width: 100%; height: 100%;
         background: #fff; color: #000;
         display: flex; align-items: center; justify-content: center;
-        transition: 0.3s ease;
+        transition: 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         font-weight: bold;
         font-size: 9px;
         padding: 0 5px;
     }
 
-    .interest-tag:hover { transform: translateY(-5px); border-color: #fff; }
+    .interest-tag:hover { transform: translateY(-4px); border-color: rgba(255,255,255,0.6); box-shadow: 0 5px 15px rgba(255,255,255,0.1); }
     .interest-tag:hover .default-text { opacity: 0; transform: translateY(-20px); }
     .interest-tag:hover .hover-text { top: 0; }
 
     .baby-blue-tag {
-        background: rgba(137, 207, 240, 0.2) !important;
-        border-color: rgba(137, 207, 240, 0.4) !important;
-        color: #89CFF0 !important;
+        background: rgba(0, 255, 255, 0.08) !important;
+        border-color: rgba(0, 255, 255, 0.2) !important;
+        color: #00ffff !important;
     }
-    .baby-blue-tag .hover-text { background: #89CFF0 !important; color: #000 !important; }
+    .baby-blue-tag .hover-text { background: #00ffff !important; color: #000 !important; }
 
     /* ================= MODALS & LIGHTBOX ================= */
     #lightbox, #model-modal { 
         position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-        background: rgba(0,0,0,0.95); backdrop-filter: blur(30px); 
+        background: rgba(2,2,4,0.96); backdrop-filter: blur(30px); 
         display: none; justify-content: center; align-items: center; z-index: 10000; 
     }
     #lightbox.active, #model-modal.active { display: flex; }
@@ -168,30 +237,105 @@
     .social-capsule {
         position: fixed; left: 20px; top: 50%; transform: translateY(-50%);
         display: flex; flex-direction: column; gap: 18px; padding: 22px 10px;
-        background: rgba(255, 255, 255, 0.04); backdrop-filter: blur(20px);
-        border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 40px; z-index: 999;
+        background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 40px; z-index: 999;
     }
     .social-link { width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; border-radius: 50%; transition: 0.3s; }
-    .social-link svg { width: 18px; height: 18px; fill: rgba(255,255,255,0.6); }
-    .social-link:hover { background: rgba(255,255,255,0.1); transform: scale(1.1); }
-    .social-link:hover svg { fill: #fff; }
+    .social-link svg { width: 18px; height: 18px; fill: rgba(255,255,255,0.4); }
+    .social-link:hover { background: rgba(255,255,255,0.08); transform: scale(1.1); }
+    .social-link:hover svg { fill: #00ffff; }
 
     .slider-container { position: relative; width: 90%; max-width: 1000px; aspect-ratio: 16 / 9; margin: 0 auto 25px; overflow: hidden; border-radius: 24px; }
     #mainSlider { width: 100%; height: 100%; background-size: cover; background-position: center; transition: background-image 0.8s; cursor: zoom-in; pointer-events: auto !important; }
 
     .header { display: flex; justify-content: space-between; align-items: center; padding: 15px 30px; margin-top: 20px; }
+    
+    /* Unique Cyber Navigation Hover Suite */
     .nav-links ul { list-style: none; display: flex; gap: 25px; padding-left: 0; margin: 0; }
-    .nav-links a { text-decoration: none; font-size: 11px; letter-spacing: 2px; color: white; opacity: 0.7; font-family: 'Orbitron'; }
+    .nav-links li { position: relative; padding: 6px 0; }
+    
+    .nav-links a { 
+        text-decoration: none; 
+        font-size: 11px; 
+        letter-spacing: 2px; 
+        color: white; 
+        opacity: 0.6; 
+        font-family: 'Orbitron'; 
+        transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        display: inline-block;
+        position: relative;
+    }
+
+    /* Laser Tracker Underline System */
+    .nav-links li::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        width: 0;
+        height: 1px;
+        background: #00ffff;
+        box-shadow: 0 0 8px #00ffff, 0 0 2px #00ffff;
+        transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        transform: translateX(-50%);
+    }
+
+    /* Hover States triggering Glitch Shadow and Laser Base Expansion */
+    .nav-links li:hover a { 
+        opacity: 1; 
+        color: #fff;
+        letter-spacing: 4px;
+        text-shadow: -1.5px 0 #00ffff, 1.5px 0 #ff0055;
+    }
+    
+    .nav-links li:hover::after {
+        width: 100%;
+    }
+
+    .bio-details {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 13px;
+        letter-spacing: 1.5px;
+        line-height: 1.8;
+    }
+
+    .live-age-counter {
+        font-family: 'Orbitron', sans-serif;
+        font-weight: bold;
+        letter-spacing: 1px;
+    }
 
     @media (max-width: 768px) { 
         .social-capsule { display: none; }
         .sketchfab-embed-wrapper { height: 350px; }
+        .clean-name-loader { font-size: 2rem; letter-spacing: 16px; margin-left: 16px; }
     }
     </style>
 </head>
-<body oncontextmenu="return false;"> <div id="loader-wrapper">
-    <div class="loader-logo">BIPLOV</div>
-    <div class="loader-bar"></div>
+<body oncontextmenu="return false;"> 
+
+<!-- SVG MATRIX ENGINE (Hides organically, provides fluid filtering logic) -->
+<svg style="position: absolute; width: 0; height: 0;">
+    <defs>
+        <filter id="organic-goo">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="12" result="blur" />
+            <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 22 -9" result="goo" />
+            <feBlend in="SourceGraphic" in2="goo" />
+        </filter>
+    </defs>
+</svg>
+
+<!-- PREMIUM MINIMALIST HOVER PORTAL PRELOADER -->
+<div id="loader-wrapper">
+    <div class="liquid-portal">
+        <div class="liquid-drop drop-core"></div>
+        <div class="liquid-drop drop-satellite-1"></div>
+        <div class="liquid-drop drop-satellite-2"></div>
+    </div>
+    <div class="kinetic-container">
+        <div class="clean-name-loader">BIPLOV</div>
+        <div class="clean-line-pulse"></div>
+    </div>
 </div>
 
 <div class="social-capsule">
@@ -199,16 +343,13 @@
         <svg viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 4.243 2.752 7.841 6.571 9.111.6.111.82-.261.82-.577 0-.285-.011-1.04-.015-2.04-2.67.58-3.233-1.287-3.233-1.287-.436-1.107-1.064-1.402-1.064-1.402-.87-.595.066-.583.066-.583.963.068 1.47 0.989 1.47 0.989.855 1.464 2.246 1.041 2.792.796.087-.62.335-1.041.61-1.281-2.131-.242-4.371-1.065-4.371-4.742 0-1.048.374-1.905.987-2.576-.099-.243-.427-1.218.094-2.538 0 0 .806-.258 2.64 0.984.765-.213 1.586-.319 2.401-.323.815.004 1.636.11 2.401.323 1.832-1.242 2.637-.984 2.637-.984.522 1.32.194 2.295.095 2.538.614.671.986 1.528.986 2.576 0 3.686-2.243 4.498-4.381 4.735.344.296.65.882.65 1.777 0 1.283-.012 2.318-.012 2.633 0 .319.217.693.825.576 3.817-1.272 6.565-4.87 6.565-9.109 0-6.627-5.373-12-12-12z"/></svg>
     </a>
     <a href="https://www.instagram.com/moonbiplov/" target="_blank" class="social-link" title="Instagram">
-        <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.266.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.848 0-3.204.012-3.584.07-4.849.149-3.225 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.791-4-4s1.791-4 4-4 4 1.791 4 4-1.791 4-4 4zm6.406-11.845c.796 0 1.441.645 1.441 1.44s-.645 1.44-1.441 1.44-1.44-.645-1.44-1.44.645-1.44 1.44-1.44z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.266.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.848 0-3.204 0.12-3.584.07-4.849.149-3.225 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.791-4-4s1.791-4 4-4 4 1.791 4 4-1.791 4-4 4zm6.406-11.845c.796 0 1.441.645 1.441 1.44s-.645 1.44-1.441 1.44-1.44-.645-1.44-1.44.645-1.44 1.44-1.44z"/></svg>
     </a>
 </div>
 
 <div id="lightbox">
     <button class="close-btn" onclick="closeLightbox()">✕</button>
     <img id="lightboxImg" src="" alt="Lightbox image" />
-</div>
-
-
 </div>
 
 <div class="container fade-in-up" id="main-content"
@@ -227,11 +368,14 @@
 
     <div class="glass-panel" style="padding: 25px 30px;"> 
         <h2 class="liquid-text" style="font-size: 28px; margin:0;">ME:</h2>
-        <div style="margin-top:8px; opacity:0.8; font-size: 14px; letter-spacing: 1px;">
-            <span id="age"></span> YEAR OLD • CREATOR
-            <p>NAME: Biplov Devkota</p>
-            <p>DOB: 3rd June 2009</p>
-            <p>ADDRESS: Gorkha, Nepal</p>
+        <div style="margin-top:8px; opacity:0.8;">
+            <div id="live-age" class="live-age-counter" style="font-size: 14px;">LOADING SYSTEM...</div>
+            
+            <div class="bio-details" style="margin-top: 15px;">
+                <div>NAME: Biplov Devkota</div>
+                <div>DOB: 3rd June 2009</div>
+                <div>ADDRESS: Gorkha, Nepal</div>
+            </div>
         </div>
     </div>
 
@@ -281,34 +425,68 @@
 <script>
 // --- Protection Script ---
 document.onkeydown = function(e) {
-    if(e.keyCode == 123) return false; // F12
-    if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) return false; // Ctrl+Shift+I
-    if(e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) return false; // Ctrl+Shift+C
-    if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) return false; // Ctrl+Shift+J
-    if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false; // Ctrl+U
+    if(e.keyCode == 123) return false; 
+    if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) return false; 
+    if(e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) return false; 
+    if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) return false; 
+    if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false; 
 };
 
 document.addEventListener("DOMContentLoaded", () => {
     setTimeout(() => {
         document.getElementById("loader-wrapper").classList.add("loader-hidden");
-        setTimeout(() => document.getElementById("main-content").classList.add("visible"), 200);
-    }, 2500); 
+        setTimeout(() => document.getElementById("main-content").classList.add("visible"), 300);
+    }, 2800); 
 });
 
-// Age Calculator
-const birthDate = new Date("2009-06-03");
-function updateAge() {
-    const today = new Date();
-    let age = today.getFullYear() - birthDate.getFullYear();
-    if (
-        today.getMonth() < birthDate.getMonth() ||
-        (today.getMonth() === birthDate.getMonth() && today.getDate() < birthDate.getDate())
-    ) {
-        age--;
+// Accurate Real-Time Live Age Ticker Script (DOB: June 3, 2009)
+const birthDate = new Date("2009-06-03T00:00:00");
+
+function updateLiveAge() {
+    const now = new Date();
+    
+    let years = now.getFullYear() - birthDate.getFullYear();
+    let birthMonth = birthDate.getMonth();
+    let currentMonth = now.getMonth();
+    
+    if (currentMonth < birthMonth || (currentMonth === birthMonth && now.getDate() < birthDate.getDate())) {
+        years--;
     }
-    document.getElementById("age").innerText = age;
+    
+    let lastBirthday = new Date(birthDate);
+    lastBirthday.setFullYear(birthDate.getFullYear() + years);
+    
+    let msDifference = now.getTime() - lastBirthday.getTime();
+    
+    const msInDay = 24 * 60 * 60 * 1000;
+    const msInHour = 60 * 60 * 1000;
+    const msInMin = 60 * 1000;
+    const msInSec = 1000;
+    
+    let days = Math.floor(msDifference / msInDay);
+    msDifference %= msInDay;
+    
+    let hours = Math.floor(msDifference / msInHour);
+    msDifference %= msInHour;
+    
+    let minutes = Math.floor(msDifference / msInMin);
+    msDifference %= msInMin;
+    
+    let seconds = Math.floor(msDifference / msInSec);
+    let milliseconds = msDifference % msInSec;
+    
+    let padHrs = String(hours).padStart(2, '0');
+    let padMins = String(minutes).padStart(2, '0');
+    let padSecs = String(seconds).padStart(2, '0');
+    let padMs = String(milliseconds).padStart(3, '0');
+    
+    document.getElementById("live-age").innerHTML = 
+        `${years} YEARS ${days} DAYS • ${padHrs}H ${padMins}M ${padSecs}S <span style="font-size:11px; opacity:0.6;">${padMs}</span> • OLD CREATOR`;
+    
+    requestAnimationFrame(updateLiveAge);
 }
-updateAge();
+
+requestAnimationFrame(updateLiveAge);
 
 // Slider Gallery Logic
 const projects = [
