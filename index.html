@@ -180,7 +180,57 @@
     .fade-in-up { opacity: 0; transform: translateY(40px); transition: 1.2s cubic-bezier(0.215, 0.610, 0.355, 1); }
     .fade-in-up.visible { opacity: 1; transform: translateY(0); }
 
-    /* ================= INTEREST TAGS ================= */
+    /* ================= ACCURATE INTEREST TAG WRAPPERS ================= */
+    .tag-wrapper {
+        position: relative;
+        display: inline-block;
+    }
+
+    /* Precision Matched Image Capsule Layout */
+    .tag-image-capsule {
+        position: absolute;
+        bottom: 135%;
+        left: 50%;
+        transform: translateX(-50%) scale(0.85);
+        width: 110px;
+        height: 65px;
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6), 0 0 15px rgba(0, 255, 255, 0.1);
+        overflow: hidden;
+        opacity: 0;
+        pointer-events: none;
+        transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        z-index: 10;
+        background: #050508;
+    }
+
+    .tag-image-capsule img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+
+    /* Balanced Alignment Triangle Hint */
+    .tag-image-capsule::after {
+        content: '';
+        position: absolute;
+        bottom: -5px;
+        left: 50%;
+        transform: translateX(-50%) rotate(45deg);
+        width: 10px;
+        height: 10px;
+        background: #050508;
+        border-right: 1px solid rgba(255, 255, 255, 0.15);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .tag-wrapper:hover .tag-image-capsule {
+        opacity: 1;
+        transform: translateX(-50%) scale(1);
+    }
+
     .interest-tag { 
         background: rgba(255,255,255,0.04); 
         padding: 12px 20px; 
@@ -388,31 +438,63 @@
 
     <div class="glass-panel" style="padding: 25px 30px;">
         <div class="liquid-text" style="font-size: 14px; letter-spacing: 3px; margin-bottom: 25px;">// THINGS I LIKE</div>
-        <div style="display:flex; gap:15px; flex-wrap:wrap;">
-            <div class="interest-tag">
-                <span class="default-text">MUSIC</span>
-                <span class="hover-text">DRAKE 🦉</span>
+        <div style="display:flex; gap:15px; flex-wrap:wrap; margin-top: 45px;">
+            
+            <!-- Music Tag Wrapper -->
+            <div class="tag-wrapper">
+                <div class="tag-image-capsule">
+                    <img src="drake.jpg" alt="Drake Preview">
+                </div>
+                <div class="interest-tag">
+                    <span class="default-text">MUSIC</span>
+                    <span class="hover-text">DRAKE 🦉</span>
+                </div>
             </div>
 
-            <div class="interest-tag">
-                <span class="default-text">GAMING</span>
-                <span class="hover-text" style="font-size: 7px;">MC, GTA V, PUBGM</span>
+            <!-- Gaming Tag Wrapper -->
+            <div class="tag-wrapper">
+                <div class="tag-image-capsule">
+                    <img src="gaming.jpg" alt="Gaming Preview">
+                </div>
+                <div class="interest-tag">
+                    <span class="default-text">GAMING</span>
+                    <span class="hover-text" style="font-size: 7px;">MC, GTA V, PUBGM</span>
+                </div>
             </div>
 
-            <div class="interest-tag" onclick="openModel()">
-                <span class="default-text">CARS</span>
-                <span class="hover-text">BMW M4 & Porsche 911 GT3RS</span>
+            <!-- Cars Tag Wrapper -->
+            <div class="tag-wrapper">
+                <div class="tag-image-capsule">
+                    <img src="cars.jpg" alt="Cars Preview">
+                </div>
+                <div class="interest-tag" onclick="openModel()">
+                    <span class="default-text">CARS</span>
+                    <span class="hover-text">BMW M4 & Porsche 911 GT3RS</span>
+                </div>
             </div>
 
-            <div class="interest-tag">
-                <span class="default-text">ASTRO 🌌</span>
-                <span class="hover-text">MOON</span>
+            <!-- Astro Tag Wrapper -->
+            <div class="tag-wrapper">
+                <div class="tag-image-capsule">
+                    <img src="astro.jpg" alt="Astro Preview">
+                </div>
+                <div class="interest-tag">
+                    <span class="default-text">ASTRO 🌌</span>
+                    <span class="hover-text">MOON</span>
+                </div>
             </div>
 
-            <div class="interest-tag baby-blue-tag">
-                <span class="default-text">FAV.COLOUR</span>
-                <span class="hover-text">BABY BLUE</span>
+            <!-- Fav Colour Tag Wrapper -->
+            <div class="tag-wrapper">
+                <div class="tag-image-capsule">
+                    <img src="blue.jpg" alt="Colour Preview">
+                </div>
+                <div class="interest-tag baby-blue-tag">
+                    <span class="default-text">FAV.COLOUR</span>
+                    <span class="hover-text">BABY BLUE</span>
+                </div>
             </div>
+
         </div>
     </div>
 
