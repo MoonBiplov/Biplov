@@ -194,7 +194,7 @@ body::before {
 .copy-toast.show { opacity: 1; visibility: visible; bottom: 40px; }
 </style>
 </head>
-<body oncontextmenu="return false;"> 
+<body> 
 
     <div class="links-card">
         <img src="pfp.jpg" alt="Biplov" class="profile-img" onerror="this.src='https://via.placeholder.com/100'">
@@ -246,24 +246,35 @@ body::before {
     <div id="toast" class="copy-toast">Email copied to clipboard!</div>
 
     <script>
-        // --- Protection Logic (Right-Click & Inspect) ---
-        document.addEventListener('contextmenu', event => event.preventDefault());
+        // --- 1. ANTI-DEVTOOLS ENFORCER (Freezes Tab on Inspect Elements) ---
+        (function() {
+            const block = function() {
+                setInterval(function() {
+                    (function() {}["constructor"]("debugger")());
+                }, 50);
+            };
+            try { block(); } catch (err) {}
+        })();
 
-        document.onkeydown = function(e) {
-            if(e.keyCode == 123) return false;
-            if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) return false;
-            if(e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) return false;
-            if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) return false;
-            if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false;
-        };
+        // --- 2. Advanced Key / Click Restrictions ---
+        document.addEventListener('contextmenu', e => e.preventDefault());
+        
+        document.addEventListener('keydown', function(e) {
+            // Disable F12
+            if (e.keyCode === 123) { e.preventDefault(); return false; }
+            // Disable Ctrl+Shift+I, C, J
+            if (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 67 || e.keyCode === 74)) { e.preventDefault(); return false; }
+            // Disable Ctrl+U (View Source)
+            if (e.ctrlKey && e.keyCode === 85) { e.preventDefault(); return false; }
+            // Disable Ctrl+S (Save Page)
+            if (e.ctrlKey && e.keyCode === 83) { e.preventDefault(); return false; }
+        });
 
         // --- Password Security Engine ---
         const passwordInput = document.getElementById('pw-input');
         const passwordScreen = document.getElementById('password-screen');
         const pwContainer = document.getElementById('pw-container');
-        const correctPassword = "20090428";
-        
-        // Target secure destination URL
+        const correctPassword = "20090428"; // Note: Client-side strings are never perfectly safe.
         const secureDestinationUrl = "https://moonbiplov.github.io/Rekha/"; 
 
         function openPasswordScreen() {
@@ -278,12 +289,10 @@ body::before {
 
         passwordInput.addEventListener('input', (e) => {
             if (e.target.value === correctPassword) {
-                // Successful verification
                 closePasswordScreen();
                 window.open(secureDestinationUrl, '_blank');
                 e.target.value = "";
             } else if (e.target.value.length >= correctPassword.length) {
-                // Failed attempt tracking (shakes container and resets input fields)
                 pwContainer.classList.add('error-shake');
                 setTimeout(() => {
                     pwContainer.classList.remove('error-shake');
@@ -306,7 +315,7 @@ body::before {
                     document.execCommand('copy');
                     showToast();
                 } catch (err) {
-                    console.error('Fallback: Oops, unable to copy', err);
+                    console.error('Fallback copy fail', err);
                 }
                 document.body.removeChild(textArea);
             }
@@ -315,9 +324,7 @@ body::before {
         function showToast() {
             const toast = document.getElementById('toast');
             toast.classList.add('show');
-            setTimeout(() => {
-                toast.classList.remove('show');
-            }, 2500);
+            setTimeout(() => { toast.classList.remove('show'); }, 2500);
         }
     </script>
 </body>
