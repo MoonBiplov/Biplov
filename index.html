@@ -362,7 +362,7 @@
     }
     </style>
 </head>
-<body oncontextmenu="return false;"> 
+<body> 
 
 <!-- SVG MATRIX ENGINE (Hides organically, provides fluid filtering logic) -->
 <svg style="position: absolute; width: 0; height: 0;">
@@ -505,15 +505,45 @@
 </div>
 
 <script>
-// --- Protection Script ---
-document.onkeydown = function(e) {
-    if(e.keyCode == 123) return false; 
-    if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) return false; 
-    if(e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) return false; 
-    if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) return false; 
-    if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false; 
-};
+// --- 1. Enhanced Anti-DevTools Anti-Tamper Logic ---
+(function() {
+    // Block right click context menu cleanly
+    document.addEventListener('contextmenu', event => event.preventDefault());
 
+    // Block common shortcut key combinations comprehensively
+    document.addEventListener('keydown', function(e) {
+        if (
+            e.keyCode === 123 || // F12
+            (e.ctrlKey && e.shiftKey && e.keyCode === 73) || // Ctrl+Shift+I
+            (e.ctrlKey && e.shiftKey && e.keyCode === 74) || // Ctrl+Shift+J
+            (e.ctrlKey && e.shiftKey && e.keyCode === 67) || // Ctrl+Shift+C
+            (e.ctrlKey && e.keyCode === 85) // Ctrl+U (View Source)
+        ) {
+            e.preventDefault();
+            return false;
+        }
+    });
+
+    // Infinite debugger execution trap to stall open DevTools panels
+    function devToolsTrap() {
+        function trap(i) {
+            if (("" + i / i).length !== 1 || i % 20 === 0) {
+                (function() {}).constructor("debugger")();
+            } else {
+                (function() {}).constructor("debugger")();
+            }
+            trap(++i);
+        }
+        try {
+            trap(0);
+        } catch (e) {}
+    }
+
+    // Repeated execution to loop endlessly if panel states are active
+    setInterval(devToolsTrap, 50);
+})();
+
+// --- 2. Portfolio Functional Logic ---
 document.addEventListener("DOMContentLoaded", () => {
     setTimeout(() => {
         document.getElementById("loader-wrapper").classList.add("loader-hidden");
