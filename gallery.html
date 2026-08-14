@@ -101,17 +101,9 @@ body::before {
 }
 
 @keyframes shake {
-    0%, 100% {
-        transform: translateX(0);
-    }
-
-    25% {
-        transform: translateX(-10px);
-    }
-
-    75% {
-        transform: translateX(10px);
-    }
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    75% { transform: translateX(10px); }
 }
 
 /* ================= GALLERY STYLES ================= */
@@ -164,7 +156,7 @@ body::before {
     transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.gallery-item img {
+.gallery-item img, .gallery-item video {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -189,18 +181,9 @@ body::before {
     left: 0;
 }
 
-.item-tall {
-    grid-row: span 2;
-}
-
-.item-wide {
-    grid-column: span 2;
-}
-
-.item-featured {
-    grid-column: span 2;
-    grid-row: span 2;
-}
+.item-tall { grid-row: span 2; }
+.item-wide { grid-column: span 2; }
+.item-featured { grid-column: span 2; grid-row: span 2; }
 
 .item-overlay {
     position: absolute;
@@ -224,6 +207,48 @@ body::before {
     letter-spacing: 1px;
 }
 
+/* ================= LIVE PHOTO BADGE ================= */
+.live-badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 20px;
+    padding: 4px 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 10px;
+    letter-spacing: 1px;
+    color: #fff;
+    z-index: 12;
+    pointer-events: none;
+    transition: background 0.3s, border-color 0.3s;
+}
+
+.live-icon {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 1.5px dashed rgba(255, 255, 255, 0.9);
+    box-sizing: border-box;
+    animation: livePulse 3s infinite linear;
+}
+
+@keyframes livePulse {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.live-badge.active {
+    background: rgba(255, 255, 255, 0.25);
+    border-color: #fff;
+}
+
+/* ================= LIGHTBOX ================= */
 #lightbox {
     position: fixed;
     top: 0;
@@ -242,11 +267,36 @@ body::before {
     display: flex;
 }
 
-#lightbox img {
+.lb-media-wrapper {
+    position: relative;
     max-width: 85%;
     max-height: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#lightbox img, #lightbox video {
+    max-width: 100%;
+    max-height: 80vh;
     border-radius: 12px;
+    user-select: none;
+}
+
+#lbVideo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    opacity: 0;
     pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+#lbVideo.playing {
+    opacity: 1;
 }
 
 .lb-btn {
@@ -262,6 +312,7 @@ body::before {
     align-items: center;
     justify-content: center;
     transition: 0.3s;
+    z-index: 10005;
 }
 
 .lb-btn:hover {
@@ -280,14 +331,41 @@ body::before {
     left: 25px;
 }
 
+/* Lightbox Live Toggle Button */
+.lb-live-toggle {
+    top: 25px;
+    left: 85px;
+    width: auto;
+    padding: 0 16px;
+    border-radius: 25px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 11px;
+    letter-spacing: 1px;
+    display: none;
+    gap: 8px;
+}
+
+.lb-hint {
+    position: absolute;
+    bottom: 25px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 11px;
+    letter-spacing: 1px;
+    opacity: 0.6;
+    pointer-events: none;
+}
+
 @media (max-width: 900px) {
     .gallery-container {
         grid-template-columns: repeat(2, 1fr);
     }
-
     .item-featured {
         grid-column: span 2;
         grid-row: span 1;
+    }
+    .lb-live-toggle {
+        top: 85px;
+        left: 25px;
     }
 }
 </style>
@@ -316,21 +394,20 @@ body::before {
     <header class="header">
         <a href="index.html" class="back-home">← BACK TO HOME</a>
 
-        <div class="liquid-text"
-             style="font-size: 18px; letter-spacing: 3px;">
+        <div class="liquid-text" style="font-size: 18px; letter-spacing: 3px;">
             GALLERY(UP 2 NOW)
         </div>
     </header>
 
     <div class="gallery-container">
 
-        <!-- IMAGE 01 -->
-        <div class="gallery-item item-featured" onclick="openLightbox(0)">
+        <!-- IMAGE 01 (Marked as Live Photo) -->
+        <div class="gallery-item item-featured" data-live="true" onclick="openLightbox(0)">
+            <div class="live-badge"><div class="live-icon"></div>LIVE</div>
             <div class="featured-wrapper">
                 <img id="imgBack" src="img2.jpg" alt="Featured Background">
                 <img id="featuredImg" src="img1.jpg" alt="Featured Foreground">
             </div>
-
             <div class="item-overlay">
                 <div class="item-title">MOON 01</div>
             </div>
@@ -347,7 +424,9 @@ body::before {
             <div class="item-overlay"><div class="item-title">03</div></div>
         </div>
 
-        <div class="gallery-item item-wide" onclick="openLightbox(3)">
+        <!-- Example: IMAGE 04 as Live Photo -->
+        <div class="gallery-item item-wide" data-live="true" onclick="openLightbox(3)">
+            <div class="live-badge"><div class="live-icon"></div>LIVE</div>
             <img src="img4.jpg">
             <div class="item-overlay"><div class="item-title">04</div></div>
         </div>
@@ -367,7 +446,9 @@ body::before {
             <div class="item-overlay"><div class="item-title">07</div></div>
         </div>
 
-        <div class="gallery-item item-wide" onclick="openLightbox(7)">
+        <!-- Example: IMAGE 08 as Live Photo -->
+        <div class="gallery-item item-wide" data-live="true" onclick="openLightbox(7)">
+            <div class="live-badge"><div class="live-icon"></div>LIVE</div>
             <img src="img8.jpg">
             <div class="item-overlay"><div class="item-title">08</div></div>
         </div>
@@ -535,7 +616,7 @@ body::before {
             <div class="item-overlay"><div class="item-title">40</div></div>
         </div>
 
-        <!-- IMAGE 41 - 43 -->
+        <!-- IMAGE 41 - 53 -->
         <div class="gallery-item" onclick="openLightbox(40)">
             <img src="img41.jpg">
             <div class="item-overlay"><div class="item-title">41</div></div>
@@ -551,61 +632,51 @@ body::before {
             <div class="item-overlay"><div class="item-title">43</div></div>
         </div>
 
-        <!-- IMAGE 44 -->
         <div class="gallery-item" onclick="openLightbox(43)">
             <img src="img44.jpg">
             <div class="item-overlay"><div class="item-title">44</div></div>
         </div>
 
-        <!-- IMAGE 45 -->
         <div class="gallery-item item-wide" onclick="openLightbox(44)">
             <img src="img45.jpg">
             <div class="item-overlay"><div class="item-title">45</div></div>
         </div>
 
-        <!-- IMAGE 46 -->
         <div class="gallery-item" onclick="openLightbox(45)">
             <img src="img46.jpg">
             <div class="item-overlay"><div class="item-title">46</div></div>
         </div>
 
-        <!-- IMAGE 47 -->
         <div class="gallery-item item-tall" onclick="openLightbox(46)">
             <img src="img47.jpg">
             <div class="item-overlay"><div class="item-title">47</div></div>
         </div>
 
-        <!-- IMAGE 48 -->
         <div class="gallery-item" onclick="openLightbox(47)">
             <img src="img48.jpg">
             <div class="item-overlay"><div class="item-title">48</div></div>
         </div>
 
-        <!-- IMAGE 49 -->
         <div class="gallery-item" onclick="openLightbox(48)">
             <img src="img49.jpg">
             <div class="item-overlay"><div class="item-title">49</div></div>
         </div>
 
-        <!-- IMAGE 50 -->
         <div class="gallery-item item-wide" onclick="openLightbox(49)">
             <img src="img50.jpg">
             <div class="item-overlay"><div class="item-title">50</div></div>
         </div>
 
-        <!-- IMAGE 51 -->
         <div class="gallery-item" onclick="openLightbox(50)">
             <img src="img51.jpg">
             <div class="item-overlay"><div class="item-title">51</div></div>
         </div>
 
-        <!-- IMAGE 52 -->
         <div class="gallery-item" onclick="openLightbox(51)">
             <img src="img52.jpg">
             <div class="item-overlay"><div class="item-title">52</div></div>
         </div>
 
-        <!-- IMAGE 53 -->
         <div class="gallery-item item-tall" onclick="openLightbox(52)">
             <img src="img53.jpg">
             <div class="item-overlay"><div class="item-title">53</div></div>
@@ -616,234 +687,200 @@ body::before {
     <!-- ================= LIGHTBOX ================= -->
     <div id="lightbox">
 
-        <button class="lb-btn lb-close" onclick="closeLightbox()">
-            ✕
+        <button class="lb-btn lb-close" onclick="closeLightbox()">✕</button>
+
+        <!-- Live Photo Toggle Button in Lightbox -->
+        <button id="lbLiveBtn" class="lb-btn lb-live-toggle">
+            <div class="live-icon"></div> LIVE
         </button>
 
-        <a id="downloadLink"
-           href="#"
-           download
-           class="lb-btn lb-download">
-
-            <svg viewBox="0 0 24 24"
-                 width="20"
-                 fill="white">
+        <a id="downloadLink" href="#" download class="lb-btn lb-download">
+            <svg viewBox="0 0 24 24" width="20" fill="white">
                 <path d="M5 20h14v-2H5v2zM19 9h-4V3H9v6H5l7 7 7-7z"/>
             </svg>
-
         </a>
 
-        <img id="lbImg" src="">
+        <div class="lb-media-wrapper" id="lbMediaWrapper">
+            <img id="lbImg" src="">
+            <video id="lbVideo" loop muted playsinline></video>
+        </div>
+
+        <div id="lbHint" class="lb-hint">PRESS AND HOLD TO PLAY LIVE PHOTO</div>
     </div>
 
     <script>
-
         // --- 1. Enhanced Anti-DevTools Anti-Tamper Logic ---
         (function() {
+            document.addEventListener('contextmenu', event => event.preventDefault());
 
-            // Block right click
-            document.addEventListener('contextmenu', event =>
-                event.preventDefault()
-            );
-
-            // Block common shortcut key combinations
             document.addEventListener('keydown', function(e) {
-
                 if (
-                    e.keyCode === 123 || // F12
-                    (e.ctrlKey && e.shiftKey && e.keyCode === 73) || // Ctrl+Shift+I
-                    (e.ctrlKey && e.shiftKey && e.keyCode === 74) || // Ctrl+Shift+J
-                    (e.ctrlKey && e.shiftKey && e.keyCode === 67) || // Ctrl+Shift+C
-                    (e.ctrlKey && e.keyCode === 85) // Ctrl+U
+                    e.keyCode === 123 || 
+                    (e.ctrlKey && e.shiftKey && e.keyCode === 73) || 
+                    (e.ctrlKey && e.shiftKey && e.keyCode === 74) || 
+                    (e.ctrlKey && e.shiftKey && e.keyCode === 67) || 
+                    (e.ctrlKey && e.keyCode === 85) 
                 ) {
                     e.preventDefault();
                     return false;
                 }
-
             });
 
-            // Debugger Loop
             function devToolsTrap() {
-
                 function trap(i) {
-
-                    if (
-                        ("" + i / i).length !== 1 ||
-                        i % 20 === 0
-                    ) {
+                    if (("" + i / i).length !== 1 || i % 20 === 0) {
                         (function() {}).constructor("debugger")();
                     } else {
                         (function() {}).constructor("debugger")();
                     }
-
                     trap(++i);
                 }
-
-                try {
-                    trap(0);
-                } catch (e) {}
-
+                try { trap(0); } catch (e) {}
             }
 
-            // Run debugger trap continually
             setInterval(devToolsTrap, 50);
-
         })();
 
 
         // --- 2. Password Logic ---
-
-        const passwordInput =
-            document.getElementById('pw-input');
-
-        const passwordScreen =
-            document.getElementById('password-screen');
-
-        const pwContainer =
-            document.getElementById('pw-container');
-
+        const passwordInput = document.getElementById('pw-input');
+        const passwordScreen = document.getElementById('password-screen');
+        const pwContainer = document.getElementById('pw-container');
         const correctPassword = "20090603";
 
-
         passwordInput.addEventListener('input', (e) => {
-
             if (e.target.value === correctPassword) {
-
                 passwordScreen.classList.add('hidden');
-
-                sessionStorage.setItem(
-                    'gallery_access',
-                    'true'
-                );
-
-            }
-
-            else if (
-                e.target.value.length >=
-                correctPassword.length
-            ) {
-
+                sessionStorage.setItem('gallery_access', 'true');
+            } else if (e.target.value.length >= correctPassword.length) {
                 pwContainer.classList.add('error-shake');
-
                 setTimeout(() => {
-
-                    pwContainer.classList.remove(
-                        'error-shake'
-                    );
-
+                    pwContainer.classList.remove('error-shake');
                     e.target.value = "";
-
                 }, 500);
-
             }
-
         });
 
-
-        if (
-            sessionStorage.getItem('gallery_access')
-            === 'true'
-        ) {
-
+        if (sessionStorage.getItem('gallery_access') === 'true') {
             passwordScreen.style.display = 'none';
-
         }
 
 
         // --- 3. Gallery Logic ---
-        // TOTAL IMAGE CAPACITY = 53
-
         const images = [];
-
         for (let i = 1; i <= 53; i++) {
             images.push(`img${i}.jpg`);
         }
 
-
         let featIdx = 0;
-
-        const featImg =
-            document.getElementById('featuredImg');
-
-        const imgBack =
-            document.getElementById('imgBack');
-
+        const featImg = document.getElementById('featuredImg');
+        const imgBack = document.getElementById('imgBack');
 
         // Featured image slideshow
         setInterval(() => {
+            featIdx = (featIdx + 1) % images.length;
+            const nextImgSrc = images[featIdx];
 
-            featIdx =
-                (featIdx + 1) % images.length;
-
-            const nextImgSrc =
-                images[featIdx];
-
-            if (imgBack) {
-                imgBack.src = nextImgSrc;
-            }
-
+            if (imgBack) imgBack.src = nextImgSrc;
             if (featImg) {
-
                 featImg.style.opacity = 0;
-
                 setTimeout(() => {
-
                     featImg.src = nextImgSrc;
-
                     featImg.style.opacity = 1;
-
                 }, 800);
-
             }
-
         }, 4500);
 
 
-        // --- 4. Lightbox ---
+        // --- 4. Lightbox & Live Photo Functionality ---
+        const lb = document.getElementById('lightbox');
+        const lbImg = document.getElementById('lbImg');
+        const lbVideo = document.getElementById('lbVideo');
+        const lbLiveBtn = document.getElementById('lbLiveBtn');
+        const lbHint = document.getElementById('lbHint');
+        const downloadLink = document.getElementById('downloadLink');
+        const lbMediaWrapper = document.getElementById('lbMediaWrapper');
+
+        let isCurrentLive = false;
 
         function openLightbox(index) {
+            const currentSrc = (index === 0) ? featImg.src : images[index];
+            const galleryItems = document.querySelectorAll('.gallery-container .gallery-item');
+            const targetItem = galleryItems[index];
 
-            const lb =
-                document.getElementById('lightbox');
+            isCurrentLive = targetItem && targetItem.getAttribute('data-live') === 'true';
 
-            const img =
-                document.getElementById('lbImg');
+            lbImg.src = currentSrc;
+            downloadLink.href = currentSrc;
 
-            const dl =
-                document.getElementById('downloadLink');
+            if (isCurrentLive) {
+                // Set live video source (matches the .jpg filename)
+                lbVideo.src = currentSrc;
+                lbVideo.load();
 
-
-            img.src =
-                (index === 0)
-                ? featImg.src
-                : images[index];
-
-
-            dl.href = img.src;
+                lbLiveBtn.style.display = 'flex';
+                lbHint.style.display = 'block';
+            } else {
+                lbVideo.src = "";
+                lbLiveBtn.style.display = 'none';
+                lbHint.style.display = 'none';
+            }
 
             lb.classList.add('active');
-
         }
-
 
         function closeLightbox() {
-
-            document
-                .getElementById('lightbox')
-                .classList.remove('active');
-
+            stopLivePhoto();
+            lb.classList.remove('active');
         }
 
+        function startLivePhoto() {
+            if (!isCurrentLive) return;
+            lbVideo.play().then(() => {
+                lbVideo.classList.add('playing');
+                lbLiveBtn.classList.add('active');
+            }).catch(() => {});
+        }
+
+        function stopLivePhoto() {
+            lbVideo.classList.remove('playing');
+            lbLiveBtn.classList.remove('active');
+            setTimeout(() => {
+                if (!lbVideo.classList.contains('playing')) {
+                    lbVideo.pause();
+                    lbVideo.currentTime = 0;
+                }
+            }, 300);
+        }
+
+        // --- Live Photo Event Listeners (Hold to Play) ---
+
+        // Mouse Events
+        lbMediaWrapper.addEventListener('mousedown', startLivePhoto);
+        lbMediaWrapper.addEventListener('mouseup', stopLivePhoto);
+        lbMediaWrapper.addEventListener('mouseleave', stopLivePhoto);
+
+        lbLiveBtn.addEventListener('mousedown', startLivePhoto);
+        lbLiveBtn.addEventListener('mouseup', stopLivePhoto);
+        lbLiveBtn.addEventListener('mouseleave', stopLivePhoto);
+
+        // Touch Events (Mobile)
+        lbMediaWrapper.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            startLivePhoto();
+        });
+        lbMediaWrapper.addEventListener('touchend', stopLivePhoto);
+
+        lbLiveBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            startLivePhoto();
+        });
+        lbLiveBtn.addEventListener('touchend', stopLivePhoto);
 
         // Escape key closes lightbox
         document.addEventListener('keydown', (e) => {
-
-            if (e.key === "Escape") {
-                closeLightbox();
-            }
-
+            if (e.key === "Escape") closeLightbox();
         });
-
     </script>
 
 </body>
